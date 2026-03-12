@@ -76,14 +76,14 @@
 
     .content {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 22px;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
     }
 
     .panel {
       flex: 1;
-      min-width: 320px;
+      min-width: 0;
     }
 
     label.title {
@@ -92,6 +92,7 @@
       color: var(--muted);
       margin-bottom: 12px;
       font-weight: 600;
+      min-height: 26px;
     }
 
     textarea {
@@ -125,6 +126,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      padding-top: 118px;
+      flex: 0 0 54px;
     }
 
     button {
@@ -178,10 +181,13 @@
       .content {
         flex-direction: column;
         align-items: stretch;
+        flex-wrap: wrap;
       }
 
       .actions {
+        padding-top: 0;
         justify-content: stretch;
+        flex: none;
       }
 
       button {
@@ -200,6 +206,7 @@
 
       label.title {
         font-size: 17px;
+        min-height: auto;
       }
 
       textarea {
@@ -313,7 +320,6 @@
     }
 
     btnConverter.addEventListener("click", converterTexto);
-
     textoEntrada.addEventListener("input", converterTexto);
 
     textoEntrada.addEventListener("paste", () => {
