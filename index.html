@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Converter Maiúsculas e Minúsculas</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #e9e9eb;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1150px;
+      margin: 18px auto;
+      padding: 0 16px;
+    }
+
+    h1 {
+      font-size: 18px;
+      margin: 0 0 16px;
+      font-weight: 700;
+    }
+
+    .box {
+      background: #f5f5f5;
+      padding: 24px 20px;
+    }
+
+    .content {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .panel {
+      flex: 1;
+      min-width: 320px;
+    }
+
+    label.title {
+      display: block;
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 300px;
+      padding: 14px;
+      font-size: 16px;
+      line-height: 1.5;
+      border: 1px solid #bfc4c9;
+      border-radius: 3px;
+      resize: vertical;
+      background: #fff;
+      color: #222;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button {
+      width: 42px;
+      height: 38px;
+      border: none;
+      border-radius: 4px;
+      background: #0d74d1;
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background: #095fad;
+    }
+
+    .options {
+      margin-top: 10px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-size: 14px;
+    }
+
+    .options label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
+      .content {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .actions {
+        justify-content: flex-start;
+      }
+
+      button {
+        width: 100%;
+        height: 44px;
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Converter Maiúsculas e Minúsculas</h1>
+
+    <div class="box">
+      <div class="content">
+        <div class="panel">
+          <label for="textoEntrada" class="title">Digite ou cole o texto no campo abaixo:</label>
+          <textarea id="textoEntrada" placeholder="Digite seu texto aqui..."></textarea>
+
+          <div class="options">
+            <label>
+              <input type="radio" name="tipoConversao" value="maiusculas">
+              Maiúsculas
+            </label>
+
+            <label>
+              <input type="radio" name="tipoConversao" value="minusculas" checked>
+              Minúsculas
+            </label>
+
+            <label>
+              <input type="radio" name="tipoConversao" value="primeiraLetra">
+              Primeira letra
+            </label>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="btnConverter" title="Converter">›</button>
+        </div>
+
+        <div class="panel">
+          <label for="textoSaida" class="title">Resultado:</label>
+          <textarea id="textoSaida" readonly placeholder="O resultado aparecerá aqui..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const textoEntrada = document.getElementById("textoEntrada");
+    const textoSaida = document.getElementById("textoSaida");
+    const btnConverter = document.getElementById("btnConverter");
+
+    function capitalizarPrimeiraLetraDeCadaLinha(texto) {
+      return texto
+        .split("\n")
+        .map((linha) => {
+          const linhaSemEspacosInicio = linha.trimStart();
+
+          if (!linhaSemEspacosInicio) {
+            return linha;
+          }
+
+          const indicePrimeiraLetra = linha.indexOf(linhaSemEspacosInicio[0]);
+
+          return (
+            linha.slice(0, indicePrimeiraLetra) +
+            linhaSemEspacosInicio.charAt(0).toUpperCase() +
+            linhaSemEspacosInicio.slice(1).toLowerCase()
+          );
+        })
+        .join("\n");
+    }
+
+    function converterTexto() {
+      const texto = textoEntrada.value;
+      const tipoSelecionado = document.querySelector('input[name="tipoConversao"]:checked').value;
+
+      let resultado = "";
+
+      if (tipoSelecionado === "maiusculas") {
+        resultado = texto.toUpperCase();
+      } else if (tipoSelecionado === "minusculas") {
+        resultado = texto.toLowerCase();
+      } else if (tipoSelecionado === "primeiraLetra") {
+        resultado = capitalizarPrimeiraLetraDeCadaLinha(texto);
+      }
+
+      textoSaida.value = resultado;
+    }
+
+    btnConverter.addEventListener("click", converterTexto);
+
+    textoEntrada.addEventListener("input", () => {
+      if (textoEntrada.value.trim() === "") {
+        textoSaida.value = "";
+      }
+    });
+  </script>
+</body>
+</html>
