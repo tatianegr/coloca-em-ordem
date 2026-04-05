@@ -119,7 +119,25 @@
     }
 
     #textoSaida {
+      width: 100%;
+      min-height: 230px;
+      padding: 16px;
+      font-size: 18px;
+      line-height: 1.5;
+      border: 1px solid var(--border);
+      border-radius: 10px;
       background: var(--output-bg);
+      color: var(--text);
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      cursor: text;
+      user-select: text;
+    }
+
+    #textoSaida:empty::before {
+      content: "O resultado aparecerá aqui...";
+      color: #7f8aa3;
     }
 
     .actions {
@@ -261,6 +279,11 @@
               <input type="radio" name="tipoConversao" value="bulletPoint">
               Bullet point
             </label>
+
+            <label>
+              <input type="radio" name="tipoConversao" value="bulletPointNegrito">
+              Bullet point com negrito
+            </label>
           </div>
         </div>
 
@@ -269,8 +292,8 @@
         </div>
 
         <div class="panel">
-          <label for="textoSaida" class="title">Resultado:</label>
-          <textarea id="textoSaida" placeholder="O resultado aparecerá aqui..."></textarea>
+          <label class="title">Resultado:</label>
+          <div id="textoSaida"></div>
         </div>
       </div>
     </div>
@@ -307,36 +330,60 @@
         .join("\n");
     }
 
-    function formatarBulletPoint(texto) {
-      const frases = texto
+    function splitFrases(texto) {
+      return texto
         .split(/(?<=[.!?])\s+|\n+/)
         .map((f) => f.trim().replace(/[;.!?]+$/, ""))
         .filter((f) => f.length > 0);
+    }
 
+    function formatarBulletPoint(texto) {
+      const frases = splitFrases(texto);
       if (frases.length === 0) return "";
-
       return frases
         .map((frase, i) => (i < frases.length - 1 ? frase + ";" : frase + "."))
         .join("\n");
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    function formatarBulletPointNegrito(texto) {
+      const frases = splitFrases(texto);
+      if (frases.length === 0) return "";
+      return frases
+        .map((frase, i) => {
+          const pontuacao = i < frases.length - 1 ? ";" : ".";
+          const colonIndex = frase.indexOf(":");
+          if (colonIndex > 0) {
+            const antes = escapeHtml(frase.slice(0, colonIndex));
+            const depois = escapeHtml(frase.slice(colonIndex));
+            return `<b>${antes}</b>${depois}${pontuacao}`;
+          }
+          return escapeHtml(frase) + pontuacao;
+        })
+        .join("<br>");
     }
 
     function converterTexto() {
       const texto = textoEntrada.value;
       const tipoSelecionado = document.querySelector('input[name="tipoConversao"]:checked').value;
 
-      let resultado = "";
-
       if (tipoSelecionado === "maiusculas") {
-        resultado = texto.toUpperCase();
+        textoSaida.textContent = texto.toUpperCase();
       } else if (tipoSelecionado === "minusculas") {
-        resultado = texto.toLowerCase();
+        textoSaida.textContent = texto.toLowerCase();
       } else if (tipoSelecionado === "primeiraLetra") {
-        resultado = capitalizarPrimeiraLetraDeCadaLinha(texto);
+        textoSaida.textContent = capitalizarPrimeiraLetraDeCadaLinha(texto);
       } else if (tipoSelecionado === "bulletPoint") {
-        resultado = formatarBulletPoint(texto);
+        textoSaida.textContent = formatarBulletPoint(texto);
+      } else if (tipoSelecionado === "bulletPointNegrito") {
+        textoSaida.innerHTML = formatarBulletPointNegrito(texto);
       }
-
-      textoSaida.value = resultado;
     }
 
     btnConverter.addEventListener("click", converterTexto);
