@@ -337,11 +337,46 @@
     const cntCaracteres = document.getElementById("cntCaracteres");
     const cntLinhas = document.getElementById("cntLinhas");
 
+    // Textarea oculto para medir linhas visuais (incluindo quebras automáticas)
+    const medidorLinhas = document.createElement("textarea");
+    medidorLinhas.setAttribute("aria-hidden", "true");
+    Object.assign(medidorLinhas.style, {
+      position: "absolute",
+      top: "-9999px",
+      left: "-9999px",
+      visibility: "hidden",
+      height: "auto",
+      overflow: "hidden",
+    });
+    document.body.appendChild(medidorLinhas);
+
+    function sincronizarEstiloMedidor() {
+      const cs = getComputedStyle(textoEntrada);
+      medidorLinhas.style.width = textoEntrada.clientWidth + "px";
+      medidorLinhas.style.font = cs.font;
+      medidorLinhas.style.padding = cs.padding;
+      medidorLinhas.style.lineHeight = cs.lineHeight;
+      medidorLinhas.style.whiteSpace = "pre-wrap";
+      medidorLinhas.style.wordBreak = cs.wordBreak;
+    }
+
+    function contarLinhasVisuais(texto) {
+      if (texto === "") return 0;
+      medidorLinhas.value = texto;
+      const cs = getComputedStyle(medidorLinhas);
+      const lineHeight = parseFloat(cs.lineHeight);
+      const paddingTop = parseFloat(cs.paddingTop);
+      const paddingBottom = parseFloat(cs.paddingBottom);
+      return Math.max(1, Math.round((medidorLinhas.scrollHeight - paddingTop - paddingBottom) / lineHeight));
+    }
+
+    window.addEventListener("resize", sincronizarEstiloMedidor);
+
     function atualizarContador() {
       const texto = textoEntrada.value;
       cntCaracteres.textContent = texto.length;
       cntPalavras.textContent = texto.trim() === "" ? 0 : texto.trim().split(/\s+/).length;
-      cntLinhas.textContent = texto === "" ? 0 : texto.split("\n").length;
+      cntLinhas.textContent = contarLinhasVisuais(texto);
     }
 
     function capitalizarPrimeiraLetraDeCadaLinha(texto) {
@@ -431,6 +466,8 @@
     opcoesConversao.forEach((opcao) => {
       opcao.addEventListener("change", converterTexto);
     });
+
+    sincronizarEstiloMedidor();
   </script>
 </body>
 </html>
