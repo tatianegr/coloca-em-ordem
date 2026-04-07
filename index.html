@@ -495,7 +495,10 @@
       } else if (tipoSelecionado === "bulletPointNegrito") {
         textoSaida.innerHTML = formatarBulletPointNegrito(texto);
       } else if (tipoSelecionado === "removerNumeros") {
-        textoSaida.textContent = texto.replace(/\s*\(\d+\)/g, "").trim();
+        textoSaida.textContent = texto
+          .split("\n")
+          .map((linha) => linha.replace(/\s*\(?\d+\)?/g, "").replace(/[ \t]{2,}/g, " ").trim())
+          .join("\n");
       }
     }
 
