@@ -90,9 +90,41 @@
       display: block;
       font-size: 18px;
       color: var(--muted);
-      margin-bottom: 12px;
+      margin-bottom: 0;
       font-weight: 600;
       min-height: 26px;
+    }
+
+    .resultado-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .btn-copiar {
+      width: auto;
+      height: auto;
+      padding: 6px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 8px;
+      background: var(--panel-2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      transform: none;
+    }
+
+    .btn-copiar:hover {
+      background: var(--border);
+      color: var(--text);
+      transform: none;
+    }
+
+    .btn-copiar.copiado {
+      background: #1a3a1a;
+      color: #6fcf6f;
+      border-color: #3a6a3a;
     }
 
     textarea {
@@ -322,7 +354,10 @@
         </div>
 
         <div class="panel">
-          <label class="title">Resultado:</label>
+          <div class="resultado-header">
+            <label class="title">Resultado:</label>
+            <button id="btnCopiar" title="Copiar resultado" class="btn-copiar">Copiar</button>
+          </div>
           <div id="textoSaida"></div>
         </div>
       </div>
@@ -337,6 +372,7 @@
     const textoEntrada = document.getElementById("textoEntrada");
     const textoSaida = document.getElementById("textoSaida");
     const btnConverter = document.getElementById("btnConverter");
+    const btnCopiar = document.getElementById("btnCopiar");
     const opcoesConversao = document.querySelectorAll('input[name="tipoConversao"]');
     const cntPalavras = document.getElementById("cntPalavras");
     const cntCaracteres = document.getElementById("cntCaracteres");
@@ -462,6 +498,24 @@
         textoSaida.textContent = texto.replace(/\s*\(\d+\)/g, "").trim();
       }
     }
+
+    btnCopiar.addEventListener("click", () => {
+      const tipoSelecionado = document.querySelector('input[name="tipoConversao"]:checked').value;
+      const texto = tipoSelecionado === "bulletPointNegrito"
+        ? textoSaida.innerText
+        : textoSaida.textContent;
+
+      if (!texto.trim()) return;
+
+      navigator.clipboard.writeText(texto).then(() => {
+        btnCopiar.textContent = "Copiado!";
+        btnCopiar.classList.add("copiado");
+        setTimeout(() => {
+          btnCopiar.textContent = "Copiar";
+          btnCopiar.classList.remove("copiado");
+        }, 2000);
+      });
+    });
 
     btnConverter.addEventListener("click", converterTexto);
     textoEntrada.addEventListener("input", () => { converterTexto(); atualizarContador(); });
