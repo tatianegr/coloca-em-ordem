@@ -309,6 +309,11 @@
               <input type="radio" name="tipoConversao" value="bulletPointNegrito">
               Bullet point com negrito
             </label>
+
+            <label>
+              <input type="radio" name="tipoConversao" value="removerNumeros">
+              Remover números
+            </label>
           </div>
         </div>
 
@@ -453,6 +458,8 @@
         textoSaida.textContent = formatarBulletPoint(texto);
       } else if (tipoSelecionado === "bulletPointNegrito") {
         textoSaida.innerHTML = formatarBulletPointNegrito(texto);
+      } else if (tipoSelecionado === "removerNumeros") {
+        textoSaida.textContent = texto.replace(/\s*\(\d+\)/g, "").trim();
       }
     }
 
