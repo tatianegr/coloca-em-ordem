@@ -86,22 +86,35 @@
       min-width: 0;
     }
 
-    label.title {
+    .paineis-header {
       display: flex;
-      align-items: center;
-      font-size: 18px;
-      color: var(--muted);
-      margin-bottom: 12px;
-      font-weight: 600;
-      min-height: 46px;
+      align-items: flex-end;
+      gap: 18px;
+      margin-bottom: 10px;
+    }
+
+    .paineis-header > label.title {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .actions-spacer {
+      flex: 0 0 54px;
     }
 
     .resultado-header {
+      flex: 1;
+      min-width: 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      min-height: 46px;
-      margin-bottom: 12px;
+    }
+
+    label.title {
+      display: block;
+      font-size: 17px;
+      color: var(--muted);
+      font-weight: 600;
     }
 
     .btn-copiar {
@@ -187,8 +200,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding-top: 131px;
       flex: 0 0 54px;
+      height: 200px;
     }
 
     button {
@@ -258,6 +271,19 @@
     }
 
     @media (max-width: 900px) {
+      .paineis-header {
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .actions-spacer {
+        display: none;
+      }
+
+      .resultado-header {
+        width: 100%;
+      }
+
       .content {
         flex-direction: column;
         align-items: stretch;
@@ -265,7 +291,7 @@
       }
 
       .actions {
-        padding-top: 0;
+        height: auto;
         justify-content: stretch;
         flex: none;
       }
@@ -317,69 +343,77 @@
 
     <div class="box">
       <div class="content">
-        <div class="panel">
+        <!-- Cabeçalhos numa linha separada para garantir alinhamento -->
+        <div class="paineis-header">
           <label for="textoEntrada" class="title">Digite ou cole o texto no campo abaixo:</label>
-          <textarea id="textoEntrada" placeholder="Digite seu texto aqui..."></textarea>
-
-          <div class="contador">
-            <span><strong id="cntPalavras">0</strong> palavras</span>
-            <span><strong id="cntCaracteres">0</strong> caracteres</span>
-            <span><strong id="cntLinhas">0</strong> linhas</span>
-          </div>
-
-          <div class="options">
-            <label>
-              <input type="radio" name="tipoConversao" value="maiusculas">
-              Maiúsculas
-            </label>
-
-            <label>
-              <input type="radio" name="tipoConversao" value="minusculas" checked>
-              Minúsculas
-            </label>
-
-            <label>
-              <input type="radio" name="tipoConversao" value="primeiraLetra">
-              Primeira letra
-            </label>
-
-            <label>
-              <input type="radio" name="tipoConversao" value="bulletPoint">
-              Bullet point
-            </label>
-
-            <label>
-              <input type="radio" name="tipoConversao" value="bulletPointNegrito">
-              Bullet point com negrito
-            </label>
-
-            <label>
-              <input type="radio" name="tipoConversao" value="bulletPointNegritoDocs">
-              Bullet point com negrito para Docs
-            </label>
-
-            <label>
-              <input type="radio" name="tipoConversao" value="bulletPointMarkdown">
-              Bullet point para Docs
-            </label>
-
-            <label>
-              <input type="radio" name="tipoConversao" value="removerNumeros">
-              Remover números
-            </label>
-          </div>
-        </div>
-
-        <div class="actions">
-          <button id="btnConverter" title="Converter">›</button>
-        </div>
-
-        <div class="panel">
+          <div class="actions-spacer"></div>
           <div class="resultado-header">
             <label class="title">Resultado:</label>
             <button id="btnCopiar" title="Copiar resultado" class="btn-copiar">Copiar</button>
           </div>
-          <div id="textoSaida"></div>
+        </div>
+
+        <!-- Caixas de texto + botão converter sempre alinhados -->
+        <div class="content">
+          <div class="panel">
+            <textarea id="textoEntrada" placeholder="Digite seu texto aqui..."></textarea>
+
+            <div class="contador">
+              <span><strong id="cntPalavras">0</strong> palavras</span>
+              <span><strong id="cntCaracteres">0</strong> caracteres</span>
+              <span><strong id="cntLinhas">0</strong> linhas</span>
+            </div>
+
+            <div class="options">
+              <label>
+                <input type="radio" name="tipoConversao" value="maiusculas">
+                Maiúsculas
+              </label>
+
+              <label>
+                <input type="radio" name="tipoConversao" value="minusculas" checked>
+                Minúsculas
+              </label>
+
+              <label>
+                <input type="radio" name="tipoConversao" value="primeiraLetra">
+                Primeira letra
+              </label>
+
+              <label>
+                <input type="radio" name="tipoConversao" value="bulletPoint">
+                Bullet point
+              </label>
+
+              <label>
+                <input type="radio" name="tipoConversao" value="bulletPointNegrito">
+                Bullet point com negrito
+              </label>
+
+              <label>
+                <input type="radio" name="tipoConversao" value="bulletPointNegritoDocs">
+                Bullet point com negrito para Docs
+              </label>
+
+              <label>
+                <input type="radio" name="tipoConversao" value="bulletPointMarkdown">
+                Bullet point para Docs
+              </label>
+
+              <label>
+                <input type="radio" name="tipoConversao" value="removerNumeros">
+                Remover números
+              </label>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button id="btnConverter" title="Converter">›</button>
+          </div>
+
+          <div class="panel">
+            <div id="textoSaida"></div>
+          </div>
         </div>
       </div>
     </div>
