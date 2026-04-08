@@ -172,6 +172,15 @@
       color: #7f8aa3;
     }
 
+    #textoSaida ul {
+      margin: 0;
+      padding-left: 22px;
+    }
+
+    #textoSaida li {
+      margin-bottom: 2px;
+    }
+
     .actions {
       display: flex;
       align-items: center;
@@ -343,6 +352,11 @@
             </label>
 
             <label>
+              <input type="radio" name="tipoConversao" value="bulletPointMarkdown">
+              Bullet point para Docs
+            </label>
+
+            <label>
               <input type="radio" name="tipoConversao" value="removerNumeros">
               Remover números
             </label>
@@ -463,6 +477,18 @@
         .replace(/>/g, "&gt;");
     }
 
+    function formatarBulletPointMarkdown(texto) {
+      const frases = splitFrases(texto);
+      if (frases.length === 0) return "";
+      const itens = frases
+        .map((frase, i) => {
+          const pontuacao = i < frases.length - 1 ? ";" : ".";
+          return `<li>${escapeHtml(frase)}${pontuacao}</li>`;
+        })
+        .join("");
+      return `<ul>${itens}</ul>`;
+    }
+
     function formatarBulletPointNegrito(texto) {
       const frases = splitFrases(texto);
       if (frases.length === 0) return "";
@@ -492,6 +518,8 @@
         textoSaida.textContent = capitalizarPrimeiraLetraDeCadaLinha(texto);
       } else if (tipoSelecionado === "bulletPoint") {
         textoSaida.textContent = formatarBulletPoint(texto);
+      } else if (tipoSelecionado === "bulletPointMarkdown") {
+        textoSaida.innerHTML = formatarBulletPointMarkdown(texto);
       } else if (tipoSelecionado === "bulletPointNegrito") {
         textoSaida.innerHTML = formatarBulletPointNegrito(texto);
       } else if (tipoSelecionado === "removerNumeros") {
@@ -504,20 +532,31 @@
 
     btnCopiar.addEventListener("click", () => {
       const tipoSelecionado = document.querySelector('input[name="tipoConversao"]:checked').value;
-      const texto = tipoSelecionado === "bulletPointNegrito"
-        ? textoSaida.innerText
-        : textoSaida.textContent;
+      const tiposHtml = ["bulletPointMarkdown", "bulletPointNegrito"];
+      const ehHtml = tiposHtml.includes(tipoSelecionado);
 
-      if (!texto.trim()) return;
+      if (!textoSaida.innerText.trim()) return;
 
-      navigator.clipboard.writeText(texto).then(() => {
+      const concluir = () => {
         btnCopiar.textContent = "Copiado!";
         btnCopiar.classList.add("copiado");
         setTimeout(() => {
           btnCopiar.textContent = "Copiar";
           btnCopiar.classList.remove("copiado");
         }, 2000);
-      });
+      };
+
+      if (ehHtml) {
+        const html = textoSaida.innerHTML;
+        const plain = textoSaida.innerText;
+        const item = new ClipboardItem({
+          "text/html": new Blob([html], { type: "text/html" }),
+          "text/plain": new Blob([plain], { type: "text/plain" }),
+        });
+        navigator.clipboard.write([item]).then(concluir);
+      } else {
+        navigator.clipboard.writeText(textoSaida.textContent).then(concluir);
+      }
     });
 
     btnConverter.addEventListener("click", converterTexto);
