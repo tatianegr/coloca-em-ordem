@@ -352,6 +352,11 @@
             </label>
 
             <label>
+              <input type="radio" name="tipoConversao" value="bulletPointNegritoDocs">
+              Bullet point com negrito para Docs
+            </label>
+
+            <label>
               <input type="radio" name="tipoConversao" value="bulletPointMarkdown">
               Bullet point para Docs
             </label>
@@ -489,6 +494,24 @@
       return `<ul>${itens}</ul>`;
     }
 
+    function formatarBulletPointNegritoDocs(texto) {
+      const frases = splitFrases(texto);
+      if (frases.length === 0) return "";
+      const itens = frases
+        .map((frase, i) => {
+          const pontuacao = i < frases.length - 1 ? ";" : ".";
+          const colonIndex = frase.indexOf(":");
+          if (colonIndex > 0) {
+            const antes = escapeHtml(frase.slice(0, colonIndex));
+            const depois = escapeHtml(frase.slice(colonIndex));
+            return `<li><b>${antes}</b>${depois}${pontuacao}</li>`;
+          }
+          return `<li>${escapeHtml(frase)}${pontuacao}</li>`;
+        })
+        .join("");
+      return `<ul>${itens}</ul>`;
+    }
+
     function formatarBulletPointNegrito(texto) {
       const frases = splitFrases(texto);
       if (frases.length === 0) return "";
@@ -522,6 +545,8 @@
         textoSaida.innerHTML = formatarBulletPointMarkdown(texto);
       } else if (tipoSelecionado === "bulletPointNegrito") {
         textoSaida.innerHTML = formatarBulletPointNegrito(texto);
+      } else if (tipoSelecionado === "bulletPointNegritoDocs") {
+        textoSaida.innerHTML = formatarBulletPointNegritoDocs(texto);
       } else if (tipoSelecionado === "removerNumeros") {
         textoSaida.textContent = texto
           .split("\n")
@@ -532,7 +557,7 @@
 
     btnCopiar.addEventListener("click", () => {
       const tipoSelecionado = document.querySelector('input[name="tipoConversao"]:checked').value;
-      const tiposHtml = ["bulletPointMarkdown", "bulletPointNegrito"];
+      const tiposHtml = ["bulletPointMarkdown", "bulletPointNegrito", "bulletPointNegritoDocs"];
       const ehHtml = tiposHtml.includes(tipoSelecionado);
 
       if (!textoSaida.innerText.trim()) return;
