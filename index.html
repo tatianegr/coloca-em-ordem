@@ -571,18 +571,39 @@
     }
 
     function formatarPalavrasChave(texto) {
+      const isNumero = (s) => /^\d[\d.,]*$/.test(s);
+
       return texto
         .split("\n")
         .map((linha) => {
-          const partes = linha.split(/\t|(?<=\S)  +(?=\S)/);
-          if (partes.length >= 2) {
-            const palavra = partes[0].trim();
-            const numero = partes[partes.length - 1].trim();
-            if (palavra && numero) return `${palavra} (${numero})`;
+          const trimmed = linha.trim();
+          if (!trimmed) return null;
+
+          // Já formatado: "keyword (número)"
+          const jaFormatado = trimmed.match(/^(.+?)\s*\((\d[\d.,]*)\)\s*$/);
+          if (jaFormatado) return `${jaFormatado[1].trim()} (${jaFormatado[2]})`;
+
+          // Separado por tab
+          const partesTabs = trimmed.split("\t");
+          if (partesTabs.length >= 2) {
+            const ultimo = partesTabs[partesTabs.length - 1].trim();
+            const primeiro = partesTabs[0].trim();
+            if (isNumero(ultimo)) return `${partesTabs.slice(0, -1).join(" ").trim()} (${ultimo})`;
+            if (isNumero(primeiro)) return `${partesTabs.slice(1).join(" ").trim()} (${primeiro})`;
           }
-          return linha.trim();
+
+          // Separado por dois ou mais espaços
+          const partesEspacos = trimmed.split(/  +/);
+          if (partesEspacos.length >= 2) {
+            const ultimo = partesEspacos[partesEspacos.length - 1].trim();
+            const primeiro = partesEspacos[0].trim();
+            if (isNumero(ultimo)) return `${partesEspacos.slice(0, -1).join(" ").trim()} (${ultimo})`;
+            if (isNumero(primeiro)) return `${partesEspacos.slice(1).join(" ").trim()} (${primeiro})`;
+          }
+
+          return trimmed;
         })
-        .filter((linha) => linha.length > 0)
+        .filter((linha) => linha !== null)
         .join("\n");
     }
 
