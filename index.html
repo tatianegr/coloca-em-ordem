@@ -592,6 +592,15 @@
             if (isNumero(primeiro)) return `${partesTabs.slice(1).join(" ").trim()} (${primeiro})`;
           }
 
+          // Separado por traço/travessão: " - ", " – ", " — "
+          const partesDash = trimmed.split(/\s+[-–—]\s+/);
+          if (partesDash.length >= 2) {
+            const ultimo = partesDash[partesDash.length - 1].trim();
+            const primeiro = partesDash[0].trim();
+            if (isNumero(ultimo)) return `${partesDash.slice(0, -1).join(" ").trim()} (${ultimo})`;
+            if (isNumero(primeiro)) return `${partesDash.slice(1).join(" ").trim()} (${primeiro})`;
+          }
+
           // Separado por dois ou mais espaços
           const partesEspacos = trimmed.split(/  +/);
           if (partesEspacos.length >= 2) {
