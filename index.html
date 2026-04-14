@@ -405,6 +405,11 @@
                 <input type="radio" name="tipoConversao" value="removerNumeros">
                 Remover números
               </label>
+
+              <label>
+                <input type="radio" name="tipoConversao" value="formatadorPalavrasChave">
+                Formatador de palavras-chave
+              </label>
             </div>
           </div>
 
@@ -565,6 +570,22 @@
         .join("<br>");
     }
 
+    function formatarPalavrasChave(texto) {
+      return texto
+        .split("\n")
+        .map((linha) => {
+          const partes = linha.split(/\t|(?<=\S)  +(?=\S)/);
+          if (partes.length >= 2) {
+            const palavra = partes[0].trim();
+            const numero = partes[partes.length - 1].trim();
+            if (palavra && numero) return `${palavra} (${numero})`;
+          }
+          return linha.trim();
+        })
+        .filter((linha) => linha.length > 0)
+        .join("\n");
+    }
+
     function converterTexto() {
       const texto = textoEntrada.value;
       const tipoSelecionado = document.querySelector('input[name="tipoConversao"]:checked').value;
@@ -588,6 +609,8 @@
           .split("\n")
           .map((linha) => linha.replace(/\s*\(?\d+\)?/g, "").replace(/[ \t]{2,}/g, " ").trim())
           .join("\n");
+      } else if (tipoSelecionado === "formatadorPalavrasChave") {
+        textoSaida.textContent = formatarPalavrasChave(texto);
       }
     }
 
