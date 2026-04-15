@@ -272,6 +272,30 @@
       color: var(--footer);
     }
 
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--panel-2);
+      border-radius: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 6px;
+      border: 2px solid var(--panel-2);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--muted);
+    }
+
+    ::-webkit-scrollbar-button {
+      display: none;
+    }
+
     @media (max-width: 900px) {
       .paineis-header {
         flex-direction: column;
