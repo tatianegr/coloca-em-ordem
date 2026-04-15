@@ -411,16 +411,6 @@
               </label>
 
               <label>
-                <input type="radio" name="tipoConversao" value="bulletPoint">
-                Bullet point
-              </label>
-
-              <label>
-                <input type="radio" name="tipoConversao" value="bulletPointNegrito">
-                Bullet point com negrito
-              </label>
-
-              <label>
                 <input type="radio" name="tipoConversao" value="bulletPointNegritoDocs">
                 Bullet point com negrito para Docs
               </label>
@@ -433,11 +423,6 @@
               <label>
                 <input type="radio" name="tipoConversao" value="removerNumeros">
                 Remover números
-              </label>
-
-              <label>
-                <input type="radio" name="tipoConversao" value="formatadorPalavrasChave">
-                Formatador de palavras-chave
               </label>
 
               <label>
@@ -542,14 +527,6 @@
         .filter((f) => f.length > 0);
     }
 
-    function formatarBulletPoint(texto) {
-      const frases = splitFrases(texto);
-      if (frases.length === 0) return "";
-      return frases
-        .map((frase, i) => (i < frases.length - 1 ? frase + ";" : frase + "."))
-        .join("\n");
-    }
-
     function escapeHtml(str) {
       return str
         .replace(/&/g, "&amp;")
@@ -585,69 +562,6 @@
         })
         .join("");
       return `<ul>${itens}</ul>`;
-    }
-
-    function formatarBulletPointNegrito(texto) {
-      const frases = splitFrases(texto);
-      if (frases.length === 0) return "";
-      return frases
-        .map((frase, i) => {
-          const pontuacao = i < frases.length - 1 ? ";" : ".";
-          const colonIndex = frase.indexOf(":");
-          if (colonIndex > 0) {
-            const antes = escapeHtml(frase.slice(0, colonIndex));
-            const depois = escapeHtml(frase.slice(colonIndex));
-            return `<b>${antes}</b>${depois}${pontuacao}`;
-          }
-          return escapeHtml(frase) + pontuacao;
-        })
-        .join("<br>");
-    }
-
-    function formatarPalavrasChave(texto) {
-      const isNumero = (s) => /^\d[\d.,]*$/.test(s);
-
-      return texto
-        .split("\n")
-        .map((linha) => {
-          const trimmed = linha.trim();
-          if (!trimmed) return null;
-
-          // Já formatado: "keyword (número)"
-          const jaFormatado = trimmed.match(/^(.+?)\s*\((\d[\d.,]*)\)\s*$/);
-          if (jaFormatado) return `${jaFormatado[1].trim()} (${jaFormatado[2]})`;
-
-          // Separado por tab
-          const partesTabs = trimmed.split("\t");
-          if (partesTabs.length >= 2) {
-            const ultimo = partesTabs[partesTabs.length - 1].trim();
-            const primeiro = partesTabs[0].trim();
-            if (isNumero(ultimo)) return `${partesTabs.slice(0, -1).join(" ").trim()} (${ultimo})`;
-            if (isNumero(primeiro)) return `${partesTabs.slice(1).join(" ").trim()} (${primeiro})`;
-          }
-
-          // Separado por traço/travessão: " - ", " – ", " — "
-          const partesDash = trimmed.split(/\s+[-–—]\s+/);
-          if (partesDash.length >= 2) {
-            const ultimo = partesDash[partesDash.length - 1].trim();
-            const primeiro = partesDash[0].trim();
-            if (isNumero(ultimo)) return `${partesDash.slice(0, -1).join(" ").trim()} (${ultimo})`;
-            if (isNumero(primeiro)) return `${partesDash.slice(1).join(" ").trim()} (${primeiro})`;
-          }
-
-          // Separado por dois ou mais espaços
-          const partesEspacos = trimmed.split(/  +/);
-          if (partesEspacos.length >= 2) {
-            const ultimo = partesEspacos[partesEspacos.length - 1].trim();
-            const primeiro = partesEspacos[0].trim();
-            if (isNumero(ultimo)) return `${partesEspacos.slice(0, -1).join(" ").trim()} (${ultimo})`;
-            if (isNumero(primeiro)) return `${partesEspacos.slice(1).join(" ").trim()} (${primeiro})`;
-          }
-
-          return trimmed;
-        })
-        .filter((linha) => linha !== null)
-        .join("\n");
     }
 
     function organizarPalavrasChaveVolume(texto) {
@@ -701,12 +615,8 @@
         textoSaida.textContent = texto.toLowerCase();
       } else if (tipoSelecionado === "primeiraLetra") {
         textoSaida.textContent = capitalizarPrimeiraLetraDeCadaLinha(texto);
-      } else if (tipoSelecionado === "bulletPoint") {
-        textoSaida.textContent = formatarBulletPoint(texto);
       } else if (tipoSelecionado === "bulletPointMarkdown") {
         textoSaida.innerHTML = formatarBulletPointMarkdown(texto);
-      } else if (tipoSelecionado === "bulletPointNegrito") {
-        textoSaida.innerHTML = formatarBulletPointNegrito(texto);
       } else if (tipoSelecionado === "bulletPointNegritoDocs") {
         textoSaida.innerHTML = formatarBulletPointNegritoDocs(texto);
       } else if (tipoSelecionado === "removerNumeros") {
@@ -714,8 +624,6 @@
           .split("\n")
           .map((linha) => linha.replace(/\s*\(?\d+\)?/g, "").replace(/[ \t]{2,}/g, " ").trim())
           .join("\n");
-      } else if (tipoSelecionado === "formatadorPalavrasChave") {
-        textoSaida.textContent = formatarPalavrasChave(texto);
       } else if (tipoSelecionado === "organizarPalavrasChaveVolume") {
         textoSaida.textContent = organizarPalavrasChaveVolume(texto);
       }
@@ -723,7 +631,7 @@
 
     btnCopiar.addEventListener("click", () => {
       const tipoSelecionado = document.querySelector('input[name="tipoConversao"]:checked').value;
-      const tiposHtml = ["bulletPointMarkdown", "bulletPointNegrito", "bulletPointNegritoDocs"];
+      const tiposHtml = ["bulletPointMarkdown", "bulletPointNegritoDocs"];
       const ehHtml = tiposHtml.includes(tipoSelecionado);
 
       if (!textoSaida.innerText.trim()) return;
