@@ -418,15 +418,20 @@
                 Bullet point para Docs
               </label>
 
-              <div style="display:flex;align-items:center;gap:18px;width:100%;">
+              <div style="display:flex;align-items:center;gap:18px;width:100%;flex-wrap:wrap;">
                 <label style="white-space:nowrap;">
                   <input type="radio" name="tipoConversao" value="removerNumeros">
                   Remover números
                 </label>
 
                 <label style="white-space:nowrap;">
-                  <input type="radio" name="tipoConversao" value="organizarPalavrasChaveVolume">
-                  Organizar Palavra-chave e Volume de Busca
+                  <input type="radio" name="tipoConversao" value="organizarVolumeDesc">
+                  Organizar Palavra-chave e Volume ↓
+                </label>
+
+                <label style="white-space:nowrap;">
+                  <input type="radio" name="tipoConversao" value="organizarVolumeAsc">
+                  Organizar Palavra-chave e Volume ↑
                 </label>
               </div>
             </div>
@@ -564,7 +569,7 @@
       return `<ul>${itens}</ul>`;
     }
 
-    function organizarPalavrasChaveVolume(texto) {
+    function organizarPalavrasChaveVolume(texto, crescente = false) {
       const linhas = texto.split("\n").map(l => l.trim()).filter(l => l.length > 0);
       const itens = [];
 
@@ -601,12 +606,14 @@
         }
       }
 
-      itens.sort((a, b) => b.volumeNum - a.volumeNum);
+      itens.sort((a, b) => crescente ? a.volumeNum - b.volumeNum : b.volumeNum - a.volumeNum);
       return itens.map(item => `${item.keyword} (${item.volume})`).join("\n");
     }
 
-    function converterTexto() {
-      const texto = textoEntrada.value;
+    let ultimoResultado = null;
+
+    function converterTexto(encadear = false) {
+      const texto = (encadear && ultimoResultado !== null) ? ultimoResultado : textoEntrada.value;
       const tipoSelecionado = document.querySelector('input[name="tipoConversao"]:checked').value;
 
       if (tipoSelecionado === "maiusculas") {
@@ -624,9 +631,14 @@
           .split("\n")
           .map((linha) => linha.replace(/\s*\(?\d+\)?/g, "").replace(/[ \t]{2,}/g, " ").trim())
           .join("\n");
-      } else if (tipoSelecionado === "organizarPalavrasChaveVolume") {
-        textoSaida.textContent = organizarPalavrasChaveVolume(texto);
+      } else if (tipoSelecionado === "organizarVolumeDesc") {
+        textoSaida.textContent = organizarPalavrasChaveVolume(texto, false);
+      } else if (tipoSelecionado === "organizarVolumeAsc") {
+        textoSaida.textContent = organizarPalavrasChaveVolume(texto, true);
       }
+
+      const resultado = textoSaida.innerText.trim();
+      ultimoResultado = resultado || null;
     }
 
     btnCopiar.addEventListener("click", () => {
@@ -658,15 +670,27 @@
       }
     });
 
-    btnConverter.addEventListener("click", converterTexto);
-    textoEntrada.addEventListener("input", () => { converterTexto(); atualizarContador(); });
+    btnConverter.addEventListener("click", () => {
+      ultimoResultado = null;
+      converterTexto(false);
+    });
+
+    textoEntrada.addEventListener("input", () => {
+      ultimoResultado = null;
+      converterTexto(false);
+      atualizarContador();
+    });
 
     textoEntrada.addEventListener("paste", () => {
-      setTimeout(() => { converterTexto(); atualizarContador(); }, 0);
+      setTimeout(() => {
+        ultimoResultado = null;
+        converterTexto(false);
+        atualizarContador();
+      }, 0);
     });
 
     opcoesConversao.forEach((opcao) => {
-      opcao.addEventListener("change", converterTexto);
+      opcao.addEventListener("change", () => converterTexto(true));
     });
 
     sincronizarEstiloMedidor();
