@@ -425,14 +425,19 @@
                 </label>
 
                 <label style="white-space:nowrap;">
-                  <input type="radio" name="tipoConversao" value="organizarVolumeDesc">
-                  Organizar Palavra-chave e Volume ↓
+                  <input type="radio" name="tipoConversao" value="organizarVolume">
+                  Organizar Palavra-chave e Volume
                 </label>
 
-                <label style="white-space:nowrap;">
-                  <input type="radio" name="tipoConversao" value="organizarVolumeAsc">
-                  Organizar Palavra-chave e Volume ↑
-                </label>
+                <div style="margin-left:auto;display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px;white-space:nowrap;">
+                  <span>Ordem:</span>
+                  <label style="color:var(--text);white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:6px;">
+                    <input type="radio" name="ordemConversao" value="decrescente" checked> ↓
+                  </label>
+                  <label style="color:var(--text);white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:6px;">
+                    <input type="radio" name="ordemConversao" value="crescente"> ↑
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -640,10 +645,9 @@
           .split("\n")
           .map((linha) => linha.replace(/\s*\(?\d+\)?/g, "").replace(/[ \t]{2,}/g, " ").trim())
           .join("\n");
-      } else if (tipoSelecionado === "organizarVolumeDesc") {
-        textoSaida.textContent = organizarPalavrasChaveVolume(texto, false);
-      } else if (tipoSelecionado === "organizarVolumeAsc") {
-        textoSaida.textContent = organizarPalavrasChaveVolume(texto, true);
+      } else if (tipoSelecionado === "organizarVolume") {
+        const crescente = document.querySelector('input[name="ordemConversao"]:checked').value === "crescente";
+        textoSaida.textContent = organizarPalavrasChaveVolume(texto, crescente);
       }
 
       const resultado = textoSaida.innerText.trim();
@@ -699,6 +703,10 @@
     });
 
     opcoesConversao.forEach((opcao) => {
+      opcao.addEventListener("change", () => converterTexto(true));
+    });
+
+    document.querySelectorAll('input[name="ordemConversao"]').forEach((opcao) => {
       opcao.addEventListener("change", () => converterTexto(true));
     });
 
