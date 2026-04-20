@@ -436,8 +436,33 @@
                 </label>
 
                 <label style="white-space:nowrap;">
+                  <input type="radio" name="tipoConversao" value="removerLinhasEmBranco">
+                  Remover linhas em branco
+                </label>
+
+                <label style="white-space:nowrap;">
+                  <input type="radio" name="tipoConversao" value="numerarLinhas">
+                  Numerar linhas
+                </label>
+
+                <label style="white-space:nowrap;">
+                  <input type="radio" name="tipoConversao" value="juntarLinhas">
+                  Juntar linhas
+                </label>
+
+                <label style="white-space:nowrap;">
                   <input type="radio" name="tipoConversao" value="ordenarLinhas">
                   Ordenar linhas
+                </label>
+
+                <label style="white-space:nowrap;">
+                  <input type="radio" name="tipoConversao" value="slug">
+                  Slug/URL
+                </label>
+
+                <label style="white-space:nowrap;">
+                  <input type="radio" name="tipoConversao" value="adicionarPrefixo">
+                  Adicionar prefixo
                 </label>
 
                 <label style="white-space:nowrap;">
@@ -460,6 +485,12 @@
                   </label>
                 </div>
               </div>
+            </div>
+
+            <div id="prefixoContainer" style="display:none;margin-top:10px;align-items:center;gap:10px;">
+              <label for="inputPrefixo" style="color:var(--muted);font-size:14px;white-space:nowrap;">Prefixo:</label>
+              <input type="text" id="inputPrefixo" placeholder='ex: "- " ou "https://site.com/"'
+                style="flex:1;padding:6px 12px;font-size:14px;border:1px solid var(--border);border-radius:8px;background:var(--panel-2);color:var(--text);outline:none;">
             </div>
           </div>
 
@@ -595,6 +626,46 @@
       return `<ul>${itens}</ul>`;
     }
 
+    function removerLinhasEmBranco(texto) {
+      return texto.split("\n").filter(l => l.trim().length > 0).join("\n");
+    }
+
+    function numerarLinhas(texto) {
+      return texto
+        .split("\n")
+        .filter(l => l.trim().length > 0)
+        .map((linha, i) => `${i + 1}. ${linha}`)
+        .join("\n");
+    }
+
+    function juntarLinhas(texto) {
+      return texto.split("\n").filter(l => l.trim().length > 0).join(", ");
+    }
+
+    function gerarSlug(texto) {
+      return texto
+        .split("\n")
+        .map(linha => linha
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, "")
+          .trim()
+          .replace(/\s+/g, "-")
+          .replace(/-+/g, "-")
+        )
+        .filter(l => l.length > 0)
+        .join("\n");
+    }
+
+    function adicionarPrefixo(texto, prefixo) {
+      return texto
+        .split("\n")
+        .filter(l => l.trim().length > 0)
+        .map(linha => `${prefixo}${linha}`)
+        .join("\n");
+    }
+
     function titleCase(texto) {
       return texto
         .split("\n")
@@ -715,6 +786,16 @@
         textoSaida.innerHTML = formatarBulletPointNegritoDocs(texto);
       } else if (tipoSelecionado === "titleCase") {
         textoSaida.textContent = titleCase(texto);
+      } else if (tipoSelecionado === "removerLinhasEmBranco") {
+        textoSaida.textContent = removerLinhasEmBranco(texto);
+      } else if (tipoSelecionado === "numerarLinhas") {
+        textoSaida.textContent = numerarLinhas(texto);
+      } else if (tipoSelecionado === "juntarLinhas") {
+        textoSaida.textContent = juntarLinhas(texto);
+      } else if (tipoSelecionado === "slug") {
+        textoSaida.textContent = gerarSlug(texto);
+      } else if (tipoSelecionado === "adicionarPrefixo") {
+        textoSaida.textContent = adicionarPrefixo(texto, document.getElementById("inputPrefixo").value);
       } else if (tipoSelecionado === "removerDuplicatas") {
         textoSaida.textContent = removerDuplicatas(texto);
       } else if (tipoSelecionado === "ordenarLinhas") {
@@ -791,9 +872,19 @@
       }, 0);
     });
 
+    function atualizarVisibilidadePrefixo() {
+      const sel = document.querySelector('input[name="tipoConversao"]:checked').value;
+      document.getElementById("prefixoContainer").style.display = sel === "adicionarPrefixo" ? "flex" : "none";
+    }
+
     opcoesConversao.forEach((opcao) => {
-      opcao.addEventListener("change", () => converterTexto(true));
+      opcao.addEventListener("change", () => {
+        atualizarVisibilidadePrefixo();
+        converterTexto(true);
+      });
     });
+
+    document.getElementById("inputPrefixo").addEventListener("input", () => converterTexto(true));
 
     document.querySelectorAll('input[name="ordemConversao"]').forEach((opcao) => {
       opcao.addEventListener("change", () => converterTexto(true));
