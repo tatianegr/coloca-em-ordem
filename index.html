@@ -410,6 +410,11 @@
               </label>
 
               <label>
+                <input type="radio" name="tipoConversao" value="titleCase">
+                Title Case
+              </label>
+
+              <label>
                 <input type="radio" name="tipoConversao" value="bulletPointNegritoDocs">
                 Bullet point com negrito para Docs
               </label>
@@ -426,8 +431,23 @@
                 </label>
 
                 <label style="white-space:nowrap;">
+                  <input type="radio" name="tipoConversao" value="removerDuplicatas">
+                  Remover duplicatas
+                </label>
+
+                <label style="white-space:nowrap;">
+                  <input type="radio" name="tipoConversao" value="ordenarLinhas">
+                  Ordenar linhas
+                </label>
+
+                <label style="white-space:nowrap;">
                   <input type="radio" name="tipoConversao" value="organizarVolume">
                   Organizar Palavra-chave e Volume
+                </label>
+
+                <label style="white-space:nowrap;">
+                  <input type="radio" name="tipoConversao" value="extrairPalavrasChave">
+                  Extrair palavras-chave
                 </label>
 
                 <div style="margin-left:auto;display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px;white-space:nowrap;">
@@ -575,6 +595,58 @@
       return `<ul>${itens}</ul>`;
     }
 
+    function titleCase(texto) {
+      return texto
+        .split("\n")
+        .map(linha => linha.replace(/\S+/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()))
+        .join("\n");
+    }
+
+    function ordenarLinhas(texto, crescente = true) {
+      const linhas = texto.split("\n").filter(l => l.trim().length > 0);
+      linhas.sort((a, b) => crescente ? a.localeCompare(b, "pt") : b.localeCompare(a, "pt"));
+      return linhas.join("\n");
+    }
+
+    function removerDuplicatas(texto) {
+      const vistas = new Set();
+      return texto
+        .split("\n")
+        .filter(linha => {
+          const chave = linha.trim().toLowerCase();
+          if (!chave || vistas.has(chave)) return false;
+          vistas.add(chave);
+          return true;
+        })
+        .join("\n");
+    }
+
+    function extrairPalavrasChave(texto) {
+      const linhas = texto.split("\n").map(l => l.trim()).filter(l => l.length > 0);
+      const keywords = [];
+      for (const linha of linhas) {
+        let keyword = null;
+        let volume = null;
+        const partes = linha.split("\t");
+        if (partes.length >= 3) {
+          const ck = partes[1].trim();
+          const cv = partes[2].replace(/[^\d.]/g, "").trim();
+          if (ck && /^\d[\d.]*$/.test(cv)) { keyword = ck; volume = cv; }
+        }
+        if (!keyword || !volume) {
+          const m = linha.match(/^(.+?)\s*\((\d{1,3}(?:\.\d{3})*|\d+)\)$/u);
+          if (m) { keyword = m[1].trim(); volume = m[2]; }
+        }
+        if (!keyword || !volume) {
+          const semNum = linha.replace(/^\d+/, "");
+          const m = semNum.match(/^([\p{L}\s]+?)\s*(\d{1,3}(?:\.\d{3})*|\d+)(?=\D|$)/u);
+          if (m) { keyword = m[1].trim(); volume = m[2]; }
+        }
+        if (keyword) keywords.push(keyword);
+      }
+      return keywords.join("\n");
+    }
+
     function organizarPalavrasChaveVolume(texto, crescente = false) {
       const linhas = texto.split("\n").map(l => l.trim()).filter(l => l.length > 0);
       const itens = [];
@@ -641,6 +713,15 @@
         textoSaida.innerHTML = formatarBulletPointMarkdown(texto);
       } else if (tipoSelecionado === "bulletPointNegritoDocs") {
         textoSaida.innerHTML = formatarBulletPointNegritoDocs(texto);
+      } else if (tipoSelecionado === "titleCase") {
+        textoSaida.textContent = titleCase(texto);
+      } else if (tipoSelecionado === "removerDuplicatas") {
+        textoSaida.textContent = removerDuplicatas(texto);
+      } else if (tipoSelecionado === "ordenarLinhas") {
+        const crescente = document.querySelector('input[name="ordemConversao"]:checked').value === "crescente";
+        textoSaida.textContent = ordenarLinhas(texto, crescente);
+      } else if (tipoSelecionado === "extrairPalavrasChave") {
+        textoSaida.textContent = extrairPalavrasChave(texto);
       } else if (tipoSelecionado === "removerNumeros") {
         textoSaida.textContent = texto
           .split("\n")
