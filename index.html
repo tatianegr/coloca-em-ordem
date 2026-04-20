@@ -390,6 +390,7 @@
               <span><strong id="cntPalavras">0</strong> palavras</span>
               <span><strong id="cntCaracteres">0</strong> caracteres</span>
               <span><strong id="cntLinhas">0</strong> linhas</span>
+              <button id="btnLimpar" class="btn-copiar" style="margin-left:auto;">Limpar</button>
             </div>
 
             <div class="options">
@@ -653,6 +654,13 @@
       const resultado = textoSaida.innerText.trim();
       ultimoResultado = resultado || null;
     }
+
+    document.getElementById("btnLimpar").addEventListener("click", () => {
+      textoEntrada.value = "";
+      textoSaida.textContent = "";
+      ultimoResultado = null;
+      atualizarContador();
+    });
 
     btnCopiar.addEventListener("click", () => {
       const tipoSelecionado = document.querySelector('input[name="tipoConversao"]:checked').value;
