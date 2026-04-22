@@ -42,7 +42,7 @@
     }
 
     .container {
-      max-width: 1180px;
+      max-width: 960px;
       margin: 12px auto;
       padding: 0 16px 12px;
     }
@@ -647,7 +647,7 @@
         .split("\n")
         .map(linha => linha
           .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[̀-ͯ]/g, "")
           .toLowerCase()
           .replace(/[^a-z0-9\s-]/g, "")
           .trim()
