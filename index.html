@@ -255,6 +255,7 @@
       flex-wrap: wrap;
       font-size: 16px;
       color: var(--text);
+      align-items: center;
     }
 
     .options label {
@@ -376,135 +377,133 @@
     </div>
 
     <div class="box">
-        <div class="paineis-header">
-          <label for="textoEntrada" class="title">Digite ou cole o texto no campo abaixo:</label>
-          <div class="actions-spacer"></div>
-          <div class="resultado-header">
-            <label class="title">Resultado:</label>
-            <button id="btnCopiar" title="Copiar resultado" class="btn-copiar">Copiar</button>
+      <div class="paineis-header">
+        <label for="textoEntrada" class="title">Digite ou cole o texto no campo abaixo:</label>
+        <div class="actions-spacer"></div>
+        <div class="resultado-header">
+          <label class="title">Resultado:</label>
+          <button id="btnCopiar" title="Copiar resultado" class="btn-copiar">Copiar</button>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="panel">
+          <textarea id="textoEntrada" placeholder="Digite seu texto aqui..."></textarea>
+
+          <div class="contador">
+            <span><strong id="cntPalavras">0</strong> palavras</span>
+            <span><strong id="cntCaracteres">0</strong> caracteres</span>
+            <span><strong id="cntLinhas">0</strong> linhas</span>
+            <button id="btnLimpar" class="btn-copiar" style="margin-left:auto;">Limpar</button>
           </div>
         </div>
 
-        <div class="content">
-          <div class="panel">
-            <textarea id="textoEntrada" placeholder="Digite seu texto aqui..."></textarea>
-
-            <div class="contador">
-              <span><strong id="cntPalavras">0</strong> palavras</span>
-              <span><strong id="cntCaracteres">0</strong> caracteres</span>
-              <span><strong id="cntLinhas">0</strong> linhas</span>
-              <button id="btnLimpar" class="btn-copiar" style="margin-left:auto;">Limpar</button>
-            </div>
-
-            <div class="options">
-              <label>
-                <input type="radio" name="tipoConversao" value="maiusculas">
-                Maiúsculas
-              </label>
-
-              <label>
-                <input type="radio" name="tipoConversao" value="minusculas" checked>
-                Minúsculas
-              </label>
-
-              <label>
-                <input type="radio" name="tipoConversao" value="primeiraLetra">
-                Primeira letra
-              </label>
-
-              <label>
-                <input type="radio" name="tipoConversao" value="titleCase">
-                Title Case
-              </label>
-
-              <label>
-                <input type="radio" name="tipoConversao" value="bulletPointNegritoDocs">
-                Bullet point com negrito para Docs
-              </label>
-
-              <label>
-                <input type="radio" name="tipoConversao" value="bulletPointMarkdown">
-                Bullet point para Docs
-              </label>
-
-              <div style="display:flex;align-items:center;gap:18px;width:100%;flex-wrap:wrap;">
-                <label style="white-space:nowrap;">
-                  <input type="radio" name="tipoConversao" value="removerNumeros">
-                  Remover números
-                </label>
-
-                <label style="white-space:nowrap;">
-                  <input type="radio" name="tipoConversao" value="removerDuplicatas">
-                  Remover duplicatas
-                </label>
-
-                <label style="white-space:nowrap;">
-                  <input type="radio" name="tipoConversao" value="removerLinhasEmBranco">
-                  Remover linhas em branco
-                </label>
-
-                <label style="white-space:nowrap;">
-                  <input type="radio" name="tipoConversao" value="numerarLinhas">
-                  Numerar linhas
-                </label>
-
-                <label style="white-space:nowrap;">
-                  <input type="radio" name="tipoConversao" value="juntarLinhas">
-                  Juntar linhas
-                </label>
-
-                <label style="white-space:nowrap;">
-                  <input type="radio" name="tipoConversao" value="ordenarLinhas">
-                  Ordenar linhas
-                </label>
-
-                <label style="white-space:nowrap;">
-                  <input type="radio" name="tipoConversao" value="slug">
-                  Slug/URL
-                </label>
-
-                <label style="white-space:nowrap;">
-                  <input type="radio" name="tipoConversao" value="adicionarPrefixo">
-                  Adicionar prefixo
-                </label>
-
-                <label style="white-space:nowrap;">
-                  <input type="radio" name="tipoConversao" value="organizarVolume">
-                  Organizar Palavra-chave e Volume
-                </label>
-
-                <label style="white-space:nowrap;">
-                  <input type="radio" name="tipoConversao" value="extrairPalavrasChave">
-                  Extrair palavras-chave
-                </label>
-
-                <div style="margin-left:auto;display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px;white-space:nowrap;">
-                  <span>Ordem:</span>
-                  <label style="color:var(--text);white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:6px;">
-                    <input type="radio" name="ordemConversao" value="decrescente" checked> ↓
-                  </label>
-                  <label style="color:var(--text);white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:6px;">
-                    <input type="radio" name="ordemConversao" value="crescente"> ↑
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <div id="prefixoContainer" style="display:none;margin-top:10px;align-items:center;gap:10px;">
-              <label for="inputPrefixo" style="color:var(--muted);font-size:14px;white-space:nowrap;">Prefixo:</label>
-              <input type="text" id="inputPrefixo" placeholder='ex: "- " ou "https://site.com/"'
-                style="flex:1;padding:6px 12px;font-size:14px;border:1px solid var(--border);border-radius:8px;background:var(--panel-2);color:var(--text);outline:none;">
-            </div>
-          </div>
-
-          <div class="actions">
-            <button id="btnConverter" title="Converter">›</button>
-          </div>
-
-          <div class="panel">
-            <div id="textoSaida"></div>
-          </div>
+        <div class="actions">
+          <button id="btnConverter" title="Converter">›</button>
         </div>
+
+        <div class="panel">
+          <div id="textoSaida"></div>
+        </div>
+      </div>
+
+      <div class="options">
+        <label>
+          <input type="radio" name="tipoConversao" value="maiusculas">
+          Maiúsculas
+        </label>
+
+        <label>
+          <input type="radio" name="tipoConversao" value="minusculas" checked>
+          Minúsculas
+        </label>
+
+        <label>
+          <input type="radio" name="tipoConversao" value="primeiraLetra">
+          Primeira letra
+        </label>
+
+        <label>
+          <input type="radio" name="tipoConversao" value="titleCase">
+          Title Case
+        </label>
+
+        <label>
+          <input type="radio" name="tipoConversao" value="bulletPointNegritoDocs">
+          Bullet point com negrito para Docs
+        </label>
+
+        <label>
+          <input type="radio" name="tipoConversao" value="bulletPointMarkdown">
+          Bullet point para Docs
+        </label>
+
+        <label style="white-space:nowrap;">
+          <input type="radio" name="tipoConversao" value="removerNumeros">
+          Remover números
+        </label>
+
+        <label style="white-space:nowrap;">
+          <input type="radio" name="tipoConversao" value="removerDuplicatas">
+          Remover duplicatas
+        </label>
+
+        <label style="white-space:nowrap;">
+          <input type="radio" name="tipoConversao" value="removerLinhasEmBranco">
+          Remover linhas em branco
+        </label>
+
+        <label style="white-space:nowrap;">
+          <input type="radio" name="tipoConversao" value="numerarLinhas">
+          Numerar linhas
+        </label>
+
+        <label style="white-space:nowrap;">
+          <input type="radio" name="tipoConversao" value="juntarLinhas">
+          Juntar linhas
+        </label>
+
+        <label style="white-space:nowrap;">
+          <input type="radio" name="tipoConversao" value="ordenarLinhas">
+          Ordenar linhas
+        </label>
+
+        <label style="white-space:nowrap;">
+          <input type="radio" name="tipoConversao" value="slug">
+          Slug/URL
+        </label>
+
+        <label style="white-space:nowrap;">
+          <input type="radio" name="tipoConversao" value="adicionarPrefixo">
+          Adicionar prefixo
+        </label>
+
+        <label style="white-space:nowrap;">
+          <input type="radio" name="tipoConversao" value="organizarVolume">
+          Organizar Palavra-chave e Volume
+        </label>
+
+        <label style="white-space:nowrap;">
+          <input type="radio" name="tipoConversao" value="extrairPalavrasChave">
+          Extrair palavras-chave
+        </label>
+
+        <div style="margin-left:auto;display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px;white-space:nowrap;">
+          <span>Ordem:</span>
+          <label style="color:var(--text);white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:6px;">
+            <input type="radio" name="ordemConversao" value="decrescente" checked> ↓
+          </label>
+          <label style="color:var(--text);white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:6px;">
+            <input type="radio" name="ordemConversao" value="crescente"> ↑
+          </label>
+        </div>
+      </div>
+
+      <div id="prefixoContainer" style="display:none;margin-top:10px;align-items:center;gap:10px;">
+        <label for="inputPrefixo" style="color:var(--muted);font-size:14px;white-space:nowrap;">Prefixo:</label>
+        <input type="text" id="inputPrefixo" placeholder='ex: "- " ou "https://site.com/"'
+          style="flex:1;max-width:400px;padding:6px 12px;font-size:14px;border:1px solid var(--border);border-radius:8px;background:var(--panel-2);color:var(--text);outline:none;">
+      </div>
     </div>
 
     <footer>
