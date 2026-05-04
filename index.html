@@ -60,27 +60,6 @@
       min-height: 0;
     }
 
-    .header {
-      margin-bottom: 6px;
-      flex-shrink: 0;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 26px;
-      margin: 0 0 6px;
-      font-weight: 700;
-      line-height: 1.2;
-    }
-
-    .description {
-      margin: 0 auto;
-      font-size: 15px;
-      line-height: 1.4;
-      color: var(--muted);
-      max-width: 760px;
-    }
-
     .box {
       background: var(--panel);
       border: 1px solid var(--border);
@@ -368,14 +347,6 @@
         font-size: 26px;
       }
 
-      h1 {
-        font-size: 24px;
-      }
-
-      .description {
-        font-size: 15px;
-      }
-
       label.title {
         font-size: 17px;
         min-height: auto;
@@ -431,95 +402,24 @@
       </div>
 
       <div class="options">
-        <label>
-          <input type="radio" name="tipoConversao" value="maiusculas">
-          Maiúsculas
-        </label>
-
-        <label>
-          <input type="radio" name="tipoConversao" value="minusculas" checked>
-          Minúsculas
-        </label>
-
-        <label>
-          <input type="radio" name="tipoConversao" value="primeiraLetra">
-          Primeira letra
-        </label>
-
-        <label>
-          <input type="radio" name="tipoConversao" value="titleCase">
-          Title Case
-        </label>
-
-        <label>
-          <input type="radio" name="tipoConversao" value="bulletPointNegritoDocs">
-          Bullet point com negrito para Docs
-        </label>
-
-        <label>
-          <input type="radio" name="tipoConversao" value="bulletPointMarkdown">
-          Bullet point para Docs
-        </label>
-
-        <label style="white-space:nowrap;">
-          <input type="radio" name="tipoConversao" value="removerNumeros">
-          Remover números
-        </label>
-
-        <label style="white-space:nowrap;">
-          <input type="radio" name="tipoConversao" value="removerDuplicatas">
-          Remover duplicatas
-        </label>
-
-        <label style="white-space:nowrap;">
-          <input type="radio" name="tipoConversao" value="removerLinhasEmBranco">
-          Remover linhas em branco
-        </label>
-
-        <label style="white-space:nowrap;">
-          <input type="radio" name="tipoConversao" value="numerarLinhas">
-          Numerar linhas
-        </label>
-
-        <label style="white-space:nowrap;">
-          <input type="radio" name="tipoConversao" value="juntarLinhas">
-          Juntar linhas
-        </label>
-
-        <label style="white-space:nowrap;">
-          <input type="radio" name="tipoConversao" value="ordenarLinhas">
-          Ordenar linhas
-        </label>
-
-        <label style="white-space:nowrap;">
-          <input type="radio" name="tipoConversao" value="slug">
-          Slug/URL
-        </label>
-
-        <label style="white-space:nowrap;">
-          <input type="radio" name="tipoConversao" value="adicionarPrefixo">
-          Adicionar prefixo
-        </label>
-
-        <label style="white-space:nowrap;">
-          <input type="radio" name="tipoConversao" value="organizarVolume">
-          Organizar Palavra-chave e Volume
-        </label>
-
-        <label style="white-space:nowrap;">
-          <input type="radio" name="tipoConversao" value="extrairPalavrasChave">
-          Extrair palavras-chave
-        </label>
-
-        <label style="white-space:nowrap;">
-          <input type="radio" name="tipoConversao" value="naturalizarPalavrasChave">
-          Naturalizar palavras-chave
-        </label>
-
-        <label style="white-space:nowrap;">
-          <input type="radio" name="tipoConversao" value="corrigirNomesProprios">
-          Corrigir nomes próprios
-        </label>
+        <label><input type="radio" name="tipoConversao" value="maiusculas"> Maiúsculas</label>
+        <label><input type="radio" name="tipoConversao" value="minusculas" checked> Minúsculas</label>
+        <label><input type="radio" name="tipoConversao" value="primeiraLetra"> Primeira letra</label>
+        <label><input type="radio" name="tipoConversao" value="titleCase"> Title Case</label>
+        <label><input type="radio" name="tipoConversao" value="bulletPointNegritoDocs"> Bullet point com negrito para Docs</label>
+        <label><input type="radio" name="tipoConversao" value="bulletPointMarkdown"> Bullet point para Docs</label>
+        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="removerNumeros"> Remover números</label>
+        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="removerDuplicatas"> Remover duplicatas</label>
+        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="removerLinhasEmBranco"> Remover linhas em branco</label>
+        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="numerarLinhas"> Numerar linhas</label>
+        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="juntarLinhas"> Juntar linhas</label>
+        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="ordenarLinhas"> Ordenar linhas</label>
+        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="slug"> Slug/URL</label>
+        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="adicionarPrefixo"> Adicionar prefixo</label>
+        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="organizarVolume"> Organizar Palavra-chave e Volume</label>
+        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="extrairPalavrasChave"> Extrair palavras-chave</label>
+        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="naturalizarPalavrasChave"> Naturalizar palavras-chave</label>
+        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="corrigirNomesProprios"> Corrigir nomes próprios</label>
 
         <div style="margin-left:auto;display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px;white-space:nowrap;">
           <span>Ordem:</span>
@@ -568,6 +468,18 @@
 
     document.body.appendChild(medidorLinhas);
 
+    function removerAcentos(str) {
+      return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function normalizar(str) {
+      return removerAcentos(str).toLowerCase();
+    }
+
+    function escaparRegex(str) {
+      return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
     function sincronizarEstiloMedidor() {
       const cs = getComputedStyle(textoEntrada);
       medidorLinhas.style.width = textoEntrada.clientWidth + "px";
@@ -607,16 +519,14 @@
         .map((linha) => {
           const linhaSemEspacosInicio = linha.trimStart();
 
-          if (!linhaSemEspacosInicio) {
-            return linha;
-          }
+          if (!linhaSemEspacosInicio) return linha;
 
           const indicePrimeiraLetra = linha.indexOf(linhaSemEspacosInicio[0]);
 
           return (
             linha.slice(0, indicePrimeiraLetra) +
             linhaSemEspacosInicio.charAt(0).toUpperCase() +
-            linhaSemEspacosInicio.slice(1).toLowerCase()
+            linhaSemEspacosInicio.slice(1)
           );
         })
         .join("\n");
@@ -638,7 +548,6 @@
 
     function formatarBulletPointMarkdown(texto) {
       const frases = splitFrases(texto);
-
       if (frases.length === 0) return "";
 
       const itens = frases
@@ -653,7 +562,6 @@
 
     function formatarBulletPointNegritoDocs(texto) {
       const frases = splitFrases(texto);
-
       if (frases.length === 0) return "";
 
       const itens = frases
@@ -675,10 +583,7 @@
     }
 
     function removerLinhasEmBranco(texto) {
-      return texto
-        .split("\n")
-        .filter(l => l.trim().length > 0)
-        .join("\n");
+      return texto.split("\n").filter(l => l.trim().length > 0).join("\n");
     }
 
     function numerarLinhas(texto) {
@@ -690,10 +595,7 @@
     }
 
     function juntarLinhas(texto) {
-      return texto
-        .split("\n")
-        .filter(l => l.trim().length > 0)
-        .join(", ");
+      return texto.split("\n").filter(l => l.trim().length > 0).join(", ");
     }
 
     function gerarSlug(texto) {
@@ -728,12 +630,8 @@
     }
 
     function ordenarLinhas(texto, crescente = true) {
-      const linhas = texto
-        .split("\n")
-        .filter(l => l.trim().length > 0);
-
+      const linhas = texto.split("\n").filter(l => l.trim().length > 0);
       linhas.sort((a, b) => crescente ? a.localeCompare(b, "pt") : b.localeCompare(a, "pt"));
-
       return linhas.join("\n");
     }
 
@@ -753,20 +651,6 @@
         .join("\n");
     }
 
-    function removerAcentos(str) {
-      return str
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-    }
-
-    function normalizar(str) {
-      return removerAcentos(str).toLowerCase();
-    }
-
-    function escaparRegex(str) {
-      return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    }
-
     function criarTextoNormalizadoComMapa(texto) {
       let normalizado = "";
       const mapa = [];
@@ -784,155 +668,13 @@
       return { normalizado, mapa };
     }
 
-    function corrigirNomesProprios(texto) {
-      const correcoes = [
-        // Estados
-        ["acre", "Acre"],
-        ["alagoas", "Alagoas"],
-        ["amapa", "Amapá"],
-        ["amazonas", "Amazonas"],
-        ["bahia", "Bahia"],
-        ["ceara", "Ceará"],
-        ["distrito federal", "Distrito Federal"],
-        ["espirito santo", "Espírito Santo"],
-        ["goias", "Goiás"],
-        ["maranhao", "Maranhão"],
-        ["mato grosso do sul", "Mato Grosso do Sul"],
-        ["mato grosso", "Mato Grosso"],
-        ["minas gerais", "Minas Gerais"],
-        ["paraiba", "Paraíba"],
-        ["parana", "Paraná"],
-        ["pernambuco", "Pernambuco"],
-        ["piaui", "Piauí"],
-        ["rio de janeiro", "Rio de Janeiro"],
-        ["rio grande do norte", "Rio Grande do Norte"],
-        ["rio grande do sul", "Rio Grande do Sul"],
-        ["rondonia", "Rondônia"],
-        ["roraima", "Roraima"],
-        ["santa catarina", "Santa Catarina"],
-        ["sao paulo", "São Paulo"],
-        ["sergipe", "Sergipe"],
-        ["tocantins", "Tocantins"],
-
-        // Siglas de estados
-        ["ac", "AC"],
-        ["al", "AL"],
-        ["ap", "AP"],
-        ["am", "AM"],
-        ["ba", "BA"],
-        ["ce", "CE"],
-        ["df", "DF"],
-        ["es", "ES"],
-        ["go", "GO"],
-        ["ma", "MA"],
-        ["mt", "MT"],
-        ["ms", "MS"],
-        ["mg", "MG"],
-        ["pa", "PA"],
-        ["pb", "PB"],
-        ["pr", "PR"],
-        ["pe", "PE"],
-        ["pi", "PI"],
-        ["rj", "RJ"],
-        ["rn", "RN"],
-        ["rs", "RS"],
-        ["ro", "RO"],
-        ["rr", "RR"],
-        ["sc", "SC"],
-        ["sp", "SP"],
-        ["se", "SE"],
-        ["to", "TO"],
-
-        // Cidades e regiões comuns
-        ["sao bernardo do campo", "São Bernardo do Campo"],
-        ["sao caetano do sul", "São Caetano do Sul"],
-        ["santo andre", "Santo André"],
-        ["sao jose dos campos", "São José dos Campos"],
-        ["sao jose do rio preto", "São José do Rio Preto"],
-        ["mogi das cruzes", "Mogi das Cruzes"],
-        ["ferraz de vasconcelos", "Ferraz de Vasconcelos"],
-        ["itaquaquecetuba", "Itaquaquecetuba"],
-        ["guarulhos", "Guarulhos"],
-        ["osasco", "Osasco"],
-        ["campinas", "Campinas"],
-        ["sorocaba", "Sorocaba"],
-        ["barueri", "Barueri"],
-        ["alphaville", "Alphaville"],
-        ["jundiai", "Jundiaí"],
-        ["santos", "Santos"],
-        ["diadema", "Diadema"],
-        ["maua", "Mauá"],
-        ["suzano", "Suzano"],
-        ["poa", "Poá"],
-        ["aruja", "Arujá"],
-
-        // Regiões
-        ["zona sul", "Zona Sul"],
-        ["zona norte", "Zona Norte"],
-        ["zona leste", "Zona Leste"],
-        ["zona oeste", "Zona Oeste"],
-        ["grande sao paulo", "Grande São Paulo"],
-        ["regiao metropolitana", "Região Metropolitana"],
-        ["abc paulista", "ABC Paulista"],
-        ["alto tiete", "Alto Tietê"],
-        ["baixada santista", "Baixada Santista"],
-        ["vale do paraiba", "Vale do Paraíba"],
-
-        // Bairros e vias comuns
-        ["vila maria", "Vila Maria"],
-        ["vila mariana", "Vila Mariana"],
-        ["vila prudente", "Vila Prudente"],
-        ["vila formosa", "Vila Formosa"],
-        ["vila matilde", "Vila Matilde"],
-        ["moema", "Moema"],
-        ["pinheiros", "Pinheiros"],
-        ["tatuape", "Tatuapé"],
-        ["penha", "Penha"],
-        ["bras", "Brás"],
-        ["mooca", "Mooca"],
-        ["carrao", "Carrão"],
-        ["avenida paulista", "Avenida Paulista"],
-        ["av paulista", "Av. Paulista"],
-
-        // Países
-        ["brasil", "Brasil"],
-        ["argentina", "Argentina"],
-        ["chile", "Chile"],
-        ["uruguai", "Uruguai"],
-        ["paraguai", "Paraguai"],
-
-        // Marcas, ferramentas e siglas comuns
-        ["cnpj", "CNPJ"],
-        ["cpf", "CPF"],
-        ["mei", "MEI"],
-        ["seo", "SEO"],
-        ["ia", "IA"],
-        ["b2b", "B2B"],
-        ["b2c", "B2C"],
-        ["api", "API"],
-        ["erp", "ERP"],
-        ["crm", "CRM"],
-        ["google meu negocio", "Google Meu Negócio"],
-        ["google ads", "Google Ads"],
-        ["google", "Google"],
-        ["whatsapp", "WhatsApp"],
-        ["instagram", "Instagram"],
-        ["facebook", "Facebook"],
-        ["linkedin", "LinkedIn"],
-        ["youtube", "YouTube"],
-        ["wordpress", "WordPress"],
-        ["woocommerce", "WooCommerce"],
-        ["shopify", "Shopify"],
-        ["tray", "Tray"]
-      ];
-
+    function substituirTermosPreservandoTexto(texto, correcoes) {
       const correcoesOrdenadas = [...correcoes].sort((a, b) => b[0].length - a[0].length);
 
       return texto
         .split("\n")
-        .filter(linha => linha.trim().length > 0)
         .map(linha => {
-          const original = linha.trim();
+          const original = linha;
           const { normalizado: linhaNormalizada, mapa } = criarTextoNormalizadoComMapa(original);
           const matches = [];
 
@@ -988,58 +730,31 @@
 
           resultado += original.slice(posicaoAtual);
 
-          return resultado.replace(/\s+/g, " ").trim();
+          return resultado;
         })
         .join("\n");
     }
 
     function naturalizarPalavrasChave(texto) {
-      function norm(s) {
-        return s
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "");
-      }
+      const siglasZona = new Set(["zl", "zs", "zn", "zo"]);
+      const siglasEstado = new Set([
+        "sp", "rj", "mg", "pr", "sc", "rs", "es", "ba", "go", "pe", "ce", "df",
+        "mt", "ms", "pa", "am", "ma", "pb", "rn", "ro", "rr", "se", "to", "ac", "al", "ap", "pi"
+      ]);
 
       const locFem = new Set([
-        "zona",
-        "regiao",
-        "area",
-        "vila",
-        "cidade",
-        "avenida",
-        "praca",
-        "alameda",
-        "estrada",
-        "serra",
-        "praia",
-        "ilha",
-        "lagoa",
-        "fazenda",
-        "capital",
-        "rua",
-        "rodovia"
+        "zona", "regiao", "area", "vila", "cidade", "avenida", "praca", "alameda",
+        "estrada", "serra", "praia", "ilha", "lagoa", "fazenda", "capital", "rua", "rodovia"
       ]);
 
       const locMasc = new Set([
-        "bairro",
-        "centro",
-        "distrito",
-        "municipio",
-        "estado",
-        "condominio",
-        "jardim",
-        "parque",
-        "setor",
-        "complexo",
-        "interior",
-        "litoral",
-        "polo",
-        "sitio"
+        "bairro", "centro", "distrito", "municipio", "estado", "condominio", "jardim",
+        "parque", "setor", "complexo", "interior", "litoral", "polo", "sitio"
       ]);
 
-      const prepFem = new Set(["na", "da", "pela", "nessa", "nesta", "numa", "a", "em", "para", "até"]);
-      const prepMasc = new Set(["no", "do", "pelo", "nesse", "neste", "num", "ao", "em", "para", "até"]);
+      const preposicoes = new Set([
+        "na", "no", "em", "da", "do", "das", "dos", "pela", "pelo", "para", "a", "ao"
+      ]);
 
       return texto
         .split("\n")
@@ -1049,30 +764,154 @@
           const result = [];
 
           for (let i = 0; i < words.length; i++) {
-            const word = words[i];
-            const wn = norm(word);
-            const prev = result.length > 0 ? norm(result[result.length - 1]) : "";
+            let word = words[i];
+            const wn = normalizar(word.replace(/[.,;:!?()[\]{}]/g, ""));
+            const prev = result.length > 0 ? normalizar(result[result.length - 1].replace(/[.,;:!?()[\]{}]/g, "")) : "";
 
-            if (i > 0 && locFem.has(wn) && !prepFem.has(prev)) {
+            if (i > 0 && siglasZona.has(wn) && !preposicoes.has(prev)) {
               result.push("na");
-            } else if (i > 0 && locMasc.has(wn) && !prepMasc.has(prev)) {
+              word = wn.toUpperCase();
+            } else if (i > 0 && siglasEstado.has(wn) && !preposicoes.has(prev)) {
+              result.push("em");
+              word = wn.toUpperCase();
+            } else if (i > 0 && locFem.has(wn) && !preposicoes.has(prev)) {
+              result.push("na");
+            } else if (i > 0 && locMasc.has(wn) && !preposicoes.has(prev)) {
               result.push("no");
             }
 
             result.push(word);
           }
 
-          return result.join(" ");
+          return capitalizarPrimeiraLetraDeCadaLinha(result.join(" "));
         })
         .join("\n");
     }
 
-    function extrairPalavrasChave(texto) {
-      const linhas = texto
-        .split("\n")
-        .map(l => l.trim())
-        .filter(l => l.length > 0);
+    function corrigirNomesProprios(texto) {
+      const correcoes = [
+        ["sao paulo", "São Paulo"],
+        ["santo andre", "Santo André"],
+        ["sao bernardo do campo", "São Bernardo do Campo"],
+        ["sao caetano do sul", "São Caetano do Sul"],
+        ["sao jose dos campos", "São José dos Campos"],
+        ["sao jose do rio preto", "São José do Rio Preto"],
+        ["mogi das cruzes", "Mogi das Cruzes"],
+        ["ferraz de vasconcelos", "Ferraz de Vasconcelos"],
+        ["itaquaquecetuba", "Itaquaquecetuba"],
+        ["guarulhos", "Guarulhos"],
+        ["osasco", "Osasco"],
+        ["campinas", "Campinas"],
+        ["sorocaba", "Sorocaba"],
+        ["barueri", "Barueri"],
+        ["alphaville", "Alphaville"],
+        ["jundiai", "Jundiaí"],
+        ["santos", "Santos"],
+        ["diadema", "Diadema"],
+        ["maua", "Mauá"],
+        ["suzano", "Suzano"],
+        ["poa", "Poá"],
+        ["aruja", "Arujá"],
 
+        ["zona sul", "Zona Sul"],
+        ["zona norte", "Zona Norte"],
+        ["zona leste", "Zona Leste"],
+        ["zona oeste", "Zona Oeste"],
+        ["grande sao paulo", "Grande São Paulo"],
+        ["regiao metropolitana", "Região Metropolitana"],
+        ["abc paulista", "ABC Paulista"],
+        ["alto tiete", "Alto Tietê"],
+        ["baixada santista", "Baixada Santista"],
+        ["vale do paraiba", "Vale do Paraíba"],
+
+        ["vila maria", "Vila Maria"],
+        ["vila mariana", "Vila Mariana"],
+        ["vila prudente", "Vila Prudente"],
+        ["vila formosa", "Vila Formosa"],
+        ["vila matilde", "Vila Matilde"],
+        ["moema", "Moema"],
+        ["pinheiros", "Pinheiros"],
+        ["tatuape", "Tatuapé"],
+        ["penha", "Penha"],
+        ["bras", "Brás"],
+        ["mooca", "Mooca"],
+        ["carrao", "Carrão"],
+        ["avenida paulista", "Avenida Paulista"],
+        ["av paulista", "Av. Paulista"],
+
+        ["acre", "Acre"],
+        ["alagoas", "Alagoas"],
+        ["amapa", "Amapá"],
+        ["amazonas", "Amazonas"],
+        ["bahia", "Bahia"],
+        ["ceara", "Ceará"],
+        ["distrito federal", "Distrito Federal"],
+        ["espirito santo", "Espírito Santo"],
+        ["goias", "Goiás"],
+        ["maranhao", "Maranhão"],
+        ["mato grosso do sul", "Mato Grosso do Sul"],
+        ["mato grosso", "Mato Grosso"],
+        ["minas gerais", "Minas Gerais"],
+        ["paraiba", "Paraíba"],
+        ["parana", "Paraná"],
+        ["pernambuco", "Pernambuco"],
+        ["piaui", "Piauí"],
+        ["rio de janeiro", "Rio de Janeiro"],
+        ["rio grande do norte", "Rio Grande do Norte"],
+        ["rio grande do sul", "Rio Grande do Sul"],
+        ["rondonia", "Rondônia"],
+        ["roraima", "Roraima"],
+        ["santa catarina", "Santa Catarina"],
+        ["sergipe", "Sergipe"],
+        ["tocantins", "Tocantins"],
+
+        ["zl", "ZL"],
+        ["zs", "ZS"],
+        ["zn", "ZN"],
+        ["zo", "ZO"],
+        ["sp", "SP"],
+        ["rj", "RJ"],
+        ["mg", "MG"],
+        ["pr", "PR"],
+        ["sc", "SC"],
+        ["rs", "RS"],
+        ["es", "ES"],
+        ["ba", "BA"],
+        ["go", "GO"],
+        ["pe", "PE"],
+        ["ce", "CE"],
+        ["df", "DF"],
+
+        ["cnpj", "CNPJ"],
+        ["cpf", "CPF"],
+        ["mei", "MEI"],
+        ["seo", "SEO"],
+        ["ia", "IA"],
+        ["b2b", "B2B"],
+        ["b2c", "B2C"],
+        ["api", "API"],
+        ["erp", "ERP"],
+        ["crm", "CRM"],
+        ["google meu negocio", "Google Meu Negócio"],
+        ["google ads", "Google Ads"],
+        ["google", "Google"],
+        ["whatsapp", "WhatsApp"],
+        ["instagram", "Instagram"],
+        ["facebook", "Facebook"],
+        ["linkedin", "LinkedIn"],
+        ["youtube", "YouTube"],
+        ["wordpress", "WordPress"],
+        ["woocommerce", "WooCommerce"],
+        ["shopify", "Shopify"],
+        ["tray", "Tray"]
+      ];
+
+      const corrigido = substituirTermosPreservandoTexto(texto, correcoes);
+      return capitalizarPrimeiraLetraDeCadaLinha(corrigido);
+    }
+
+    function extrairPalavrasChave(texto) {
+      const linhas = texto.split("\n").map(l => l.trim()).filter(l => l.length > 0);
       const keywords = [];
 
       for (const linha of linhas) {
@@ -1110,20 +949,14 @@
           }
         }
 
-        if (keyword) {
-          keywords.push(keyword);
-        }
+        if (keyword) keywords.push(keyword);
       }
 
       return keywords.join("\n");
     }
 
     function organizarPalavrasChaveVolume(texto, crescente = false) {
-      const linhas = texto
-        .split("\n")
-        .map(l => l.trim())
-        .filter(l => l.length > 0);
-
+      const linhas = texto.split("\n").map(l => l.trim()).filter(l => l.length > 0);
       const itens = [];
 
       for (const linha of linhas) {
@@ -1172,9 +1005,7 @@
 
       itens.sort((a, b) => crescente ? a.volumeNum - b.volumeNum : b.volumeNum - a.volumeNum);
 
-      return itens
-        .map(item => `${item.keyword} (${item.volume})`)
-        .join("\n");
+      return itens.map(item => `${item.keyword} (${item.volume})`).join("\n");
     }
 
     function converterTexto() {
