@@ -753,6 +753,37 @@
         .join("\n");
     }
 
+    function removerAcentos(str) {
+      return str
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function normalizar(str) {
+      return removerAcentos(str).toLowerCase();
+    }
+
+    function escaparRegex(str) {
+      return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    function criarTextoNormalizadoComMapa(texto) {
+      let normalizado = "";
+      const mapa = [];
+
+      for (let i = 0; i < texto.length; i++) {
+        const originalChar = texto[i];
+        const convertido = removerAcentos(originalChar).toLowerCase();
+
+        for (let j = 0; j < convertido.length; j++) {
+          normalizado += convertido[j];
+          mapa.push(i);
+        }
+      }
+
+      return { normalizado, mapa };
+    }
+
     function corrigirNomesProprios(texto) {
       const correcoes = [
         // Estados
@@ -784,33 +815,33 @@
         ["tocantins", "Tocantins"],
 
         // Siglas de estados
-        [" ac ", " AC "],
-        [" al ", " AL "],
-        [" ap ", " AP "],
-        [" am ", " AM "],
-        [" ba ", " BA "],
-        [" ce ", " CE "],
-        [" df ", " DF "],
-        [" es ", " ES "],
-        [" go ", " GO "],
-        [" ma ", " MA "],
-        [" mt ", " MT "],
-        [" ms ", " MS "],
-        [" mg ", " MG "],
-        [" pa ", " PA "],
-        [" pb ", " PB "],
-        [" pr ", " PR "],
-        [" pe ", " PE "],
-        [" pi ", " PI "],
-        [" rj ", " RJ "],
-        [" rn ", " RN "],
-        [" rs ", " RS "],
-        [" ro ", " RO "],
-        [" rr ", " RR "],
-        [" sc ", " SC "],
-        [" sp ", " SP "],
-        [" se ", " SE "],
-        [" to ", " TO "],
+        ["ac", "AC"],
+        ["al", "AL"],
+        ["ap", "AP"],
+        ["am", "AM"],
+        ["ba", "BA"],
+        ["ce", "CE"],
+        ["df", "DF"],
+        ["es", "ES"],
+        ["go", "GO"],
+        ["ma", "MA"],
+        ["mt", "MT"],
+        ["ms", "MS"],
+        ["mg", "MG"],
+        ["pa", "PA"],
+        ["pb", "PB"],
+        ["pr", "PR"],
+        ["pe", "PE"],
+        ["pi", "PI"],
+        ["rj", "RJ"],
+        ["rn", "RN"],
+        ["rs", "RS"],
+        ["ro", "RO"],
+        ["rr", "RR"],
+        ["sc", "SC"],
+        ["sp", "SP"],
+        ["se", "SE"],
+        ["to", "TO"],
 
         // Cidades e regiões comuns
         ["sao bernardo do campo", "São Bernardo do Campo"],
@@ -833,7 +864,6 @@
         ["maua", "Mauá"],
         ["suzano", "Suzano"],
         ["poa", "Poá"],
-        ["arujá", "Arujá"],
         ["aruja", "Arujá"],
 
         // Regiões
@@ -861,7 +891,6 @@
         ["bras", "Brás"],
         ["mooca", "Mooca"],
         ["carrao", "Carrão"],
-        ["carrão", "Carrão"],
         ["avenida paulista", "Avenida Paulista"],
         ["av paulista", "Av. Paulista"],
 
@@ -883,10 +912,9 @@
         ["api", "API"],
         ["erp", "ERP"],
         ["crm", "CRM"],
-        ["google", "Google"],
-        ["google ads", "Google Ads"],
         ["google meu negocio", "Google Meu Negócio"],
-        ["google meu negócio", "Google Meu Negócio"],
+        ["google ads", "Google Ads"],
+        ["google", "Google"],
         ["whatsapp", "WhatsApp"],
         ["instagram", "Instagram"],
         ["facebook", "Facebook"],
@@ -898,37 +926,67 @@
         ["tray", "Tray"]
       ];
 
-      function normalizar(str) {
-        return str
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "");
-      }
-
-      function escaparRegex(str) {
-        return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      }
+      const correcoesOrdenadas = [...correcoes].sort((a, b) => b[0].length - a[0].length);
 
       return texto
         .split("\n")
         .filter(linha => linha.trim().length > 0)
         .map(linha => {
-          let resultado = linha.trim().toLowerCase();
-          let textoNormalizado = normalizar(resultado);
-
-          const correcoesOrdenadas = [...correcoes].sort((a, b) => b[0].length - a[0].length);
+          const original = linha.trim();
+          const { normalizado: linhaNormalizada, mapa } = criarTextoNormalizadoComMapa(original);
+          const matches = [];
 
           correcoesOrdenadas.forEach(([termo, correto]) => {
-            const termoNormalizado = normalizar(termo.trim());
+            const termoNormalizado = normalizar(termo);
+            const regex = new RegExp(`\\b${escaparRegex(termoNormalizado)}\\b`, "g");
 
-            if (!termoNormalizado) return;
+            let match;
 
-            const regex = new RegExp(`\\b${escaparRegex(termoNormalizado)}\\b`, "gi");
+            while ((match = regex.exec(linhaNormalizada)) !== null) {
+              const inicioNormalizado = match.index;
+              const fimNormalizado = match.index + match[0].length - 1;
 
-            textoNormalizado = textoNormalizado.replace(regex, correto);
+              const inicioOriginal = mapa[inicioNormalizado];
+              const fimOriginal = mapa[fimNormalizado] + 1;
+
+              if (inicioOriginal !== undefined && fimOriginal !== undefined) {
+                matches.push({
+                  inicio: inicioOriginal,
+                  fim: fimOriginal,
+                  correto,
+                  tamanho: fimOriginal - inicioOriginal
+                });
+              }
+            }
           });
 
-          resultado = textoNormalizado;
+          matches.sort((a, b) => {
+            if (a.inicio !== b.inicio) return a.inicio - b.inicio;
+            return b.tamanho - a.tamanho;
+          });
+
+          const selecionados = [];
+          let ultimoFim = -1;
+
+          for (const match of matches) {
+            if (match.inicio >= ultimoFim) {
+              selecionados.push(match);
+              ultimoFim = match.fim;
+            }
+          }
+
+          if (selecionados.length === 0) return original;
+
+          let resultado = "";
+          let posicaoAtual = 0;
+
+          selecionados.forEach(match => {
+            resultado += original.slice(posicaoAtual, match.inicio);
+            resultado += match.correto;
+            posicaoAtual = match.fim;
+          });
+
+          resultado += original.slice(posicaoAtual);
 
           return resultado.replace(/\s+/g, " ").trim();
         })
@@ -1119,10 +1177,8 @@
         .join("\n");
     }
 
-    let ultimoResultado = null;
-
-    function converterTexto(encadear = false) {
-      const texto = (encadear && ultimoResultado !== null) ? ultimoResultado : textoEntrada.value;
+    function converterTexto() {
+      const texto = textoEntrada.value;
       const tipoSelecionado = document.querySelector('input[name="tipoConversao"]:checked').value;
 
       if (tipoSelecionado === "maiusculas") {
@@ -1167,15 +1223,11 @@
         const crescente = document.querySelector('input[name="ordemConversao"]:checked').value === "crescente";
         textoSaida.textContent = organizarPalavrasChaveVolume(texto, crescente);
       }
-
-      const resultado = textoSaida.innerText.trim();
-      ultimoResultado = resultado || null;
     }
 
     document.getElementById("btnLimpar").addEventListener("click", () => {
       textoEntrada.value = "";
       textoSaida.textContent = "";
-      ultimoResultado = null;
       atualizarContador();
     });
 
@@ -1212,20 +1264,17 @@
     });
 
     btnConverter.addEventListener("click", () => {
-      ultimoResultado = null;
-      converterTexto(false);
+      converterTexto();
     });
 
     textoEntrada.addEventListener("input", () => {
-      ultimoResultado = null;
-      converterTexto(false);
+      converterTexto();
       atualizarContador();
     });
 
     textoEntrada.addEventListener("paste", () => {
       setTimeout(() => {
-        ultimoResultado = null;
-        converterTexto(false);
+        converterTexto();
         atualizarContador();
       }, 0);
     });
@@ -1238,14 +1287,18 @@
     opcoesConversao.forEach((opcao) => {
       opcao.addEventListener("change", () => {
         atualizarVisibilidadePrefixo();
-        converterTexto(true);
+        converterTexto();
       });
     });
 
-    document.getElementById("inputPrefixo").addEventListener("input", () => converterTexto(true));
+    document.getElementById("inputPrefixo").addEventListener("input", () => {
+      converterTexto();
+    });
 
     document.querySelectorAll('input[name="ordemConversao"]').forEach((opcao) => {
-      opcao.addEventListener("change", () => converterTexto(true));
+      opcao.addEventListener("change", () => {
+        converterTexto();
+      });
     });
 
     sincronizarEstiloMedidor();
