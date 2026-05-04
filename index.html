@@ -453,11 +453,6 @@
           </label>
 
           <label>
-            <input type="radio" name="tipoConversao" value="corrigirNomesProprios">
-            Corrigir nomes próprios
-          </label>
-
-          <label>
             <input type="radio" name="tipoConversao" value="bulletPointNegritoDocs">
             Bullet point com negrito para Docs
           </label>
@@ -520,6 +515,11 @@
           <label style="white-space:nowrap;">
             <input type="radio" name="tipoConversao" value="naturalizarPalavrasChave">
             Naturalizar palavras-chave
+          </label>
+
+          <label style="white-space:nowrap;">
+            <input type="radio" name="tipoConversao" value="corrigirNomesProprios">
+            Corrigir nomes próprios
           </label>
 
           <div style="margin-left:auto;display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px;white-space:nowrap;">
@@ -733,6 +733,7 @@
 
       return texto.split("\n").filter(l => l.trim().length > 0).map(linha => {
         return linha.trim().split(/\s+/).map((word, i) => {
+          if (word.length > 1 && /[A-Z]/.test(word) && word === word.toUpperCase()) return word;
           const lower = word.toLowerCase();
           if (i > 0 && minusculas.has(lower)) return lower;
           return lower.charAt(0).toUpperCase() + lower.slice(1);
@@ -747,8 +748,8 @@
 
       const locFem = new Set(['zona', 'regiao', 'area', 'vila', 'cidade', 'avenida', 'praca', 'alameda', 'estrada', 'serra', 'praia', 'ilha', 'lagoa', 'fazenda', 'capital', 'rua', 'rodovia']);
       const locMasc = new Set(['bairro', 'centro', 'distrito', 'municipio', 'estado', 'condominio', 'jardim', 'parque', 'setor', 'complexo', 'interior', 'litoral', 'polo', 'sitio']);
-      const prepFem = new Set(['na', 'da', 'pela', 'nessa', 'nesta', 'numa', 'a', 'em', 'para', 'ate']);
-      const prepMasc = new Set(['no', 'do', 'pelo', 'nesse', 'neste', 'num', 'ao', 'em', 'para', 'ate']);
+      const prepFem = new Set(['na', 'da', 'pela', 'nessa', 'nesta', 'numa', 'a', 'em', 'para', 'até']);
+      const prepMasc = new Set(['no', 'do', 'pelo', 'nesse', 'neste', 'num', 'ao', 'em', 'para', 'até']);
 
       return texto.split("\n").filter(l => l.trim().length > 0).map(linha => {
         const words = linha.trim().split(/\s+/);
@@ -866,8 +867,6 @@
         textoSaida.innerHTML = formatarBulletPointNegritoDocs(texto);
       } else if (tipoSelecionado === "titleCase") {
         textoSaida.textContent = titleCase(texto);
-      } else if (tipoSelecionado === "corrigirNomesProprios") {
-        textoSaida.textContent = corrigirNomesProprios(texto);
       } else if (tipoSelecionado === "removerLinhasEmBranco") {
         textoSaida.textContent = removerLinhasEmBranco(texto);
       } else if (tipoSelecionado === "numerarLinhas") {
@@ -890,6 +889,8 @@
           .split("\n")
           .map((linha) => linha.replace(/\s*\(?\d+\)?/g, "").replace(/[ \t]{2,}/g, " ").trim())
           .join("\n");
+      } else if (tipoSelecionado === "corrigirNomesProprios") {
+        textoSaida.textContent = corrigirNomesProprios(texto);
       } else if (tipoSelecionado === "naturalizarPalavrasChave") {
         textoSaida.textContent = naturalizarPalavrasChave(texto);
       } else if (tipoSelecionado === "organizarVolume") {
