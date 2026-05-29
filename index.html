@@ -748,8 +748,8 @@
 
       const locFem = new Set(['zona', 'regiao', 'area', 'vila', 'cidade', 'avenida', 'praca', 'alameda', 'estrada', 'serra', 'praia', 'ilha', 'lagoa', 'fazenda', 'capital', 'rua', 'rodovia']);
       const locMasc = new Set(['bairro', 'centro', 'distrito', 'municipio', 'estado', 'condominio', 'jardim', 'parque', 'setor', 'complexo', 'interior', 'litoral', 'polo', 'sitio']);
-      const prepFem = new Set(['na', 'da', 'pela', 'nessa', 'nesta', 'numa', 'a', 'em', 'para', 'até']);
-      const prepMasc = new Set(['no', 'do', 'pelo', 'nesse', 'neste', 'num', 'ao', 'em', 'para', 'até']);
+      const prepFem = new Set(['na', 'da', 'pela', 'nessa', 'nesta', 'numa', 'a', 'em', 'para', 'ate']);
+      const prepMasc = new Set(['no', 'do', 'pelo', 'nesse', 'neste', 'num', 'ao', 'em', 'para', 'ate']);
 
       return texto.split("\n").filter(l => l.trim().length > 0).map(linha => {
         const words = linha.trim().split(/\s+/);
@@ -815,6 +815,21 @@
           if (candidateKeyword && /^\d[\d.]*$/.test(candidateVolume)) {
             keyword = candidateKeyword;
             volume = candidateVolume;
+          }
+        }
+
+        // Formato tabela markdown: | **keyword** | **volume** |
+        if (!keyword || !volume) {
+          if (/\|.*\|/.test(linha) && !/---/.test(linha)) {
+            const cells = linha.split('|').map(c => c.trim()).filter(c => c.length > 0);
+            if (cells.length >= 2) {
+              const candidateKeyword = cells[0].replace(/\*\*/g, '').trim();
+              const candidateVolume = cells[1].replace(/\*\*/g, '').replace(/[^\d.]/g, '').trim();
+              if (candidateKeyword && /^\d[\d.]*$/.test(candidateVolume)) {
+                keyword = candidateKeyword;
+                volume = candidateVolume;
+              }
+            }
           }
         }
 
