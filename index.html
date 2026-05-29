@@ -60,6 +60,27 @@
       min-height: 0;
     }
 
+    .header {
+      margin-bottom: 6px;
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin: 0 0 6px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .description {
+      margin: 0 auto;
+      font-size: 15px;
+      line-height: 1.4;
+      color: var(--muted);
+      max-width: 760px;
+    }
+
     .box {
       background: var(--panel);
       border: 1px solid var(--border);
@@ -347,6 +368,14 @@
         font-size: 26px;
       }
 
+      h1 {
+        font-size: 24px;
+      }
+
+      .description {
+        font-size: 15px;
+      }
+
       label.title {
         font-size: 17px;
         min-height: auto;
@@ -371,72 +400,144 @@
 <body>
   <div class="container">
     <div class="box">
-      <div class="paineis-header">
-        <label for="textoEntrada" class="title">Digite ou cole o texto no campo abaixo:</label>
-        <div class="actions-spacer"></div>
-        <div class="resultado-header">
-          <label class="title">Resultado:</label>
-          <button id="btnCopiar" title="Copiar resultado" class="btn-copiar">Copiar</button>
-        </div>
-      </div>
-
-      <div class="content">
-        <div class="panel">
-          <textarea id="textoEntrada" placeholder="Digite seu texto aqui..."></textarea>
+        <!-- Cabeçalhos numa linha separada para garantir alinhamento -->
+        <div class="paineis-header">
+          <label for="textoEntrada" class="title">Digite ou cole o texto no campo abaixo:</label>
+          <div class="actions-spacer"></div>
+          <div class="resultado-header">
+            <label class="title">Resultado:</label>
+            <button id="btnCopiar" title="Copiar resultado" class="btn-copiar">Copiar</button>
+          </div>
         </div>
 
-        <div class="actions">
-          <button id="btnConverter" title="Converter">›</button>
+        <div class="content">
+          <div class="panel">
+            <textarea id="textoEntrada" placeholder="Digite seu texto aqui..."></textarea>
+          </div>
+
+          <div class="actions">
+            <button id="btnConverter" title="Converter">›</button>
+          </div>
+
+          <div class="panel">
+            <div id="textoSaida" contenteditable="true" spellcheck="false"></div>
+          </div>
         </div>
 
-        <div class="panel">
-          <div id="textoSaida" contenteditable="true" spellcheck="false"></div>
+        <div class="contador">
+          <span><strong id="cntPalavras">0</strong> palavras</span>
+          <span><strong id="cntCaracteres">0</strong> caracteres</span>
+          <span><strong id="cntLinhas">0</strong> linhas</span>
+          <button id="btnLimpar" class="btn-copiar" style="margin-left:auto;">Limpar</button>
         </div>
-      </div>
 
-      <div class="contador">
-        <span><strong id="cntPalavras">0</strong> palavras</span>
-        <span><strong id="cntCaracteres">0</strong> caracteres</span>
-        <span><strong id="cntLinhas">0</strong> linhas</span>
-        <button id="btnLimpar" class="btn-copiar" style="margin-left:auto;">Limpar</button>
-      </div>
-
-      <div class="options">
-        <label><input type="radio" name="tipoConversao" value="maiusculas"> Maiúsculas</label>
-        <label><input type="radio" name="tipoConversao" value="minusculas" checked> Minúsculas</label>
-        <label><input type="radio" name="tipoConversao" value="primeiraLetra"> Primeira letra</label>
-        <label><input type="radio" name="tipoConversao" value="titleCase"> Title Case</label>
-        <label><input type="radio" name="tipoConversao" value="bulletPointNegritoDocs"> Bullet point com negrito para Docs</label>
-        <label><input type="radio" name="tipoConversao" value="bulletPointMarkdown"> Bullet point para Docs</label>
-        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="removerNumeros"> Remover números</label>
-        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="removerDuplicatas"> Remover duplicatas</label>
-        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="removerLinhasEmBranco"> Remover linhas em branco</label>
-        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="numerarLinhas"> Numerar linhas</label>
-        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="juntarLinhas"> Juntar linhas</label>
-        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="ordenarLinhas"> Ordenar linhas</label>
-        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="slug"> Slug/URL</label>
-        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="adicionarPrefixo"> Adicionar prefixo</label>
-        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="organizarVolume"> Organizar Palavra-chave e Volume</label>
-        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="extrairPalavrasChave"> Extrair palavras-chave</label>
-        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="naturalizarPalavrasChave"> Naturalizar palavras-chave</label>
-        <label style="white-space:nowrap;"><input type="radio" name="tipoConversao" value="corrigirNomesProprios"> Corrigir nomes próprios</label>
-
-        <div style="margin-left:auto;display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px;white-space:nowrap;">
-          <span>Ordem:</span>
-          <label style="color:var(--text);white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:6px;">
-            <input type="radio" name="ordemConversao" value="decrescente" checked> ↓
+        <div class="options">
+          <label>
+            <input type="radio" name="tipoConversao" value="maiusculas">
+            Maiúsculas
           </label>
-          <label style="color:var(--text);white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:6px;">
-            <input type="radio" name="ordemConversao" value="crescente"> ↑
-          </label>
-        </div>
-      </div>
 
-      <div id="prefixoContainer" style="display:none;margin-top:10px;align-items:center;gap:10px;">
-        <label for="inputPrefixo" style="color:var(--muted);font-size:14px;white-space:nowrap;">Prefixo:</label>
-        <input type="text" id="inputPrefixo" placeholder='ex: "- " ou "https://site.com/"'
-          style="flex:1;max-width:400px;padding:6px 12px;font-size:14px;border:1px solid var(--border);border-radius:8px;background:var(--panel-2);color:var(--text);outline:none;">
-      </div>
+          <label>
+            <input type="radio" name="tipoConversao" value="minusculas" checked>
+            Minúsculas
+          </label>
+
+          <label>
+            <input type="radio" name="tipoConversao" value="primeiraLetra">
+            Primeira letra
+          </label>
+
+          <label>
+            <input type="radio" name="tipoConversao" value="titleCase">
+            Title Case
+          </label>
+
+          <label>
+            <input type="radio" name="tipoConversao" value="bulletPointNegritoDocs">
+            Bullet point com negrito para Docs
+          </label>
+
+          <label>
+            <input type="radio" name="tipoConversao" value="bulletPointMarkdown">
+            Bullet point para Docs
+          </label>
+
+          <label style="white-space:nowrap;">
+            <input type="radio" name="tipoConversao" value="removerNumeros">
+            Remover números
+          </label>
+
+          <label style="white-space:nowrap;">
+            <input type="radio" name="tipoConversao" value="removerDuplicatas">
+            Remover duplicatas
+          </label>
+
+          <label style="white-space:nowrap;">
+            <input type="radio" name="tipoConversao" value="removerLinhasEmBranco">
+            Remover linhas em branco
+          </label>
+
+          <label style="white-space:nowrap;">
+            <input type="radio" name="tipoConversao" value="numerarLinhas">
+            Numerar linhas
+          </label>
+
+          <label style="white-space:nowrap;">
+            <input type="radio" name="tipoConversao" value="juntarLinhas">
+            Juntar linhas
+          </label>
+
+          <label style="white-space:nowrap;">
+            <input type="radio" name="tipoConversao" value="ordenarLinhas">
+            Ordenar linhas
+          </label>
+
+          <label style="white-space:nowrap;">
+            <input type="radio" name="tipoConversao" value="slug">
+            Slug/URL
+          </label>
+
+          <label style="white-space:nowrap;">
+            <input type="radio" name="tipoConversao" value="adicionarPrefixo">
+            Adicionar prefixo
+          </label>
+
+          <label style="white-space:nowrap;">
+            <input type="radio" name="tipoConversao" value="organizarVolume">
+            Organizar Palavra-chave e Volume
+          </label>
+
+          <label style="white-space:nowrap;">
+            <input type="radio" name="tipoConversao" value="extrairPalavrasChave">
+            Extrair palavras-chave
+          </label>
+
+          <label style="white-space:nowrap;">
+            <input type="radio" name="tipoConversao" value="naturalizarPalavrasChave">
+            Naturalizar palavras-chave
+          </label>
+
+          <label style="white-space:nowrap;">
+            <input type="radio" name="tipoConversao" value="corrigirNomesProprios">
+            Corrigir nomes próprios
+          </label>
+
+          <div style="margin-left:auto;display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px;white-space:nowrap;">
+            <span>Ordem:</span>
+            <label style="color:var(--text);white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:6px;">
+              <input type="radio" name="ordemConversao" value="decrescente" checked> ↓
+            </label>
+            <label style="color:var(--text);white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:6px;">
+              <input type="radio" name="ordemConversao" value="crescente"> ↑
+            </label>
+          </div>
+        </div>
+
+        <div id="prefixoContainer" style="display:none;margin-top:10px;align-items:center;gap:10px;">
+          <label for="inputPrefixo" style="color:var(--muted);font-size:14px;white-space:nowrap;">Prefixo:</label>
+          <input type="text" id="inputPrefixo" placeholder='ex: "- " ou "https://site.com/"'
+            style="flex:1;max-width:400px;padding:6px 12px;font-size:14px;border:1px solid var(--border);border-radius:8px;background:var(--panel-2);color:var(--text);outline:none;">
+        </div>
     </div>
 
     <footer>
@@ -454,9 +555,9 @@
     const cntCaracteres = document.getElementById("cntCaracteres");
     const cntLinhas = document.getElementById("cntLinhas");
 
+    // Textarea oculto para medir linhas visuais (incluindo quebras automáticas)
     const medidorLinhas = document.createElement("textarea");
     medidorLinhas.setAttribute("aria-hidden", "true");
-
     Object.assign(medidorLinhas.style, {
       position: "fixed",
       top: "-9999px",
@@ -465,20 +566,7 @@
       height: "auto",
       overflow: "hidden",
     });
-
     document.body.appendChild(medidorLinhas);
-
-    function removerAcentos(str) {
-      return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    }
-
-    function normalizar(str) {
-      return removerAcentos(str).toLowerCase();
-    }
-
-    function escaparRegex(str) {
-      return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    }
 
     function sincronizarEstiloMedidor() {
       const cs = getComputedStyle(textoEntrada);
@@ -492,14 +580,11 @@
 
     function contarLinhasVisuais(texto) {
       if (texto === "") return 0;
-
       medidorLinhas.value = texto;
-
       const cs = getComputedStyle(medidorLinhas);
       const lineHeight = parseFloat(cs.lineHeight);
       const paddingTop = parseFloat(cs.paddingTop);
       const paddingBottom = parseFloat(cs.paddingBottom);
-
       return Math.max(1, Math.round((medidorLinhas.scrollHeight - paddingTop - paddingBottom) / lineHeight));
     }
 
@@ -507,7 +592,6 @@
 
     function atualizarContador() {
       const texto = textoEntrada.value;
-
       cntCaracteres.textContent = texto.length;
       cntPalavras.textContent = texto.trim() === "" ? 0 : texto.trim().split(/\s+/).length;
       cntLinhas.textContent = contarLinhasVisuais(texto);
@@ -519,14 +603,16 @@
         .map((linha) => {
           const linhaSemEspacosInicio = linha.trimStart();
 
-          if (!linhaSemEspacosInicio) return linha;
+          if (!linhaSemEspacosInicio) {
+            return linha;
+          }
 
           const indicePrimeiraLetra = linha.indexOf(linhaSemEspacosInicio[0]);
 
           return (
             linha.slice(0, indicePrimeiraLetra) +
             linhaSemEspacosInicio.charAt(0).toUpperCase() +
-            linhaSemEspacosInicio.slice(1)
+            linhaSemEspacosInicio.slice(1).toLowerCase()
           );
         })
         .join("\n");
@@ -549,36 +635,30 @@
     function formatarBulletPointMarkdown(texto) {
       const frases = splitFrases(texto);
       if (frases.length === 0) return "";
-
       const itens = frases
         .map((frase, i) => {
           const pontuacao = i < frases.length - 1 ? ";" : ".";
           return `<li>${escapeHtml(frase)}${pontuacao}</li>`;
         })
         .join("");
-
       return `<ul>${itens}</ul>`;
     }
 
     function formatarBulletPointNegritoDocs(texto) {
       const frases = splitFrases(texto);
       if (frases.length === 0) return "";
-
       const itens = frases
         .map((frase, i) => {
           const pontuacao = i < frases.length - 1 ? ";" : ".";
           const colonIndex = frase.indexOf(":");
-
           if (colonIndex > 0) {
             const antes = escapeHtml(frase.slice(0, colonIndex));
             const depois = escapeHtml(frase.slice(colonIndex));
             return `<li><b>${antes}</b>${depois}${pontuacao}</li>`;
           }
-
           return `<li>${escapeHtml(frase)}${pontuacao}</li>`;
         })
         .join("");
-
       return `<ul>${itens}</ul>`;
     }
 
@@ -603,7 +683,7 @@
         .split("\n")
         .map(linha => linha
           .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[̀-ͯ]/g, "")
           .toLowerCase()
           .replace(/[^a-z0-9\s-]/g, "")
           .trim()
@@ -637,321 +717,85 @@
 
     function removerDuplicatas(texto) {
       const vistas = new Set();
-
       return texto
         .split("\n")
         .filter(linha => {
           const chave = linha.trim().toLowerCase();
-
           if (!chave || vistas.has(chave)) return false;
-
           vistas.add(chave);
           return true;
         })
         .join("\n");
     }
 
-    function criarTextoNormalizadoComMapa(texto) {
-      let normalizado = "";
-      const mapa = [];
+    function corrigirNomesProprios(texto) {
+      const minusculas = new Set(['de', 'da', 'do', 'das', 'dos', 'e', 'em', 'na', 'no', 'nas', 'nos', 'a', 'o', 'as', 'os', 'para', 'com']);
 
-      for (let i = 0; i < texto.length; i++) {
-        const originalChar = texto[i];
-        const convertido = removerAcentos(originalChar).toLowerCase();
-
-        for (let j = 0; j < convertido.length; j++) {
-          normalizado += convertido[j];
-          mapa.push(i);
-        }
-      }
-
-      return { normalizado, mapa };
-    }
-
-    function substituirTermosPreservandoTexto(texto, correcoes) {
-      const correcoesOrdenadas = [...correcoes].sort((a, b) => b[0].length - a[0].length);
-
-      return texto
-        .split("\n")
-        .map(linha => {
-          const original = linha;
-          const { normalizado: linhaNormalizada, mapa } = criarTextoNormalizadoComMapa(original);
-          const matches = [];
-
-          correcoesOrdenadas.forEach(([termo, correto]) => {
-            const termoNormalizado = normalizar(termo);
-            const regex = new RegExp(`\\b${escaparRegex(termoNormalizado)}\\b`, "g");
-
-            let match;
-
-            while ((match = regex.exec(linhaNormalizada)) !== null) {
-              const inicioNormalizado = match.index;
-              const fimNormalizado = match.index + match[0].length - 1;
-
-              const inicioOriginal = mapa[inicioNormalizado];
-              const fimOriginal = mapa[fimNormalizado] + 1;
-
-              if (inicioOriginal !== undefined && fimOriginal !== undefined) {
-                matches.push({
-                  inicio: inicioOriginal,
-                  fim: fimOriginal,
-                  correto,
-                  tamanho: fimOriginal - inicioOriginal
-                });
-              }
-            }
-          });
-
-          matches.sort((a, b) => {
-            if (a.inicio !== b.inicio) return a.inicio - b.inicio;
-            return b.tamanho - a.tamanho;
-          });
-
-          const selecionados = [];
-          let ultimoFim = -1;
-
-          for (const match of matches) {
-            if (match.inicio >= ultimoFim) {
-              selecionados.push(match);
-              ultimoFim = match.fim;
-            }
-          }
-
-          if (selecionados.length === 0) return original;
-
-          let resultado = "";
-          let posicaoAtual = 0;
-
-          selecionados.forEach(match => {
-            resultado += original.slice(posicaoAtual, match.inicio);
-            resultado += match.correto;
-            posicaoAtual = match.fim;
-          });
-
-          resultado += original.slice(posicaoAtual);
-
-          return resultado;
-        })
-        .join("\n");
+      return texto.split("\n").filter(l => l.trim().length > 0).map(linha => {
+        return linha.trim().split(/\s+/).map((word, i) => {
+          if (word.length > 1 && /[A-Z]/.test(word) && word === word.toUpperCase()) return word;
+          const lower = word.toLowerCase();
+          if (i > 0 && minusculas.has(lower)) return lower;
+          return lower.charAt(0).toUpperCase() + lower.slice(1);
+        }).join(' ');
+      }).join('\n');
     }
 
     function naturalizarPalavrasChave(texto) {
-      const siglasZona = new Set(["zl", "zs", "zn", "zo"]);
-      const siglasEstado = new Set([
-        "sp", "rj", "mg", "pr", "sc", "rs", "es", "ba", "go", "pe", "ce", "df",
-        "mt", "ms", "pa", "am", "ma", "pb", "rn", "ro", "rr", "se", "to", "ac", "al", "ap", "pi"
-      ]);
+      function norm(s) {
+        return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+      }
 
-      const locFem = new Set([
-        "zona", "regiao", "area", "vila", "cidade", "avenida", "praca", "alameda",
-        "estrada", "serra", "praia", "ilha", "lagoa", "fazenda", "capital", "rua", "rodovia"
-      ]);
+      const locFem = new Set(['zona', 'regiao', 'area', 'vila', 'cidade', 'avenida', 'praca', 'alameda', 'estrada', 'serra', 'praia', 'ilha', 'lagoa', 'fazenda', 'capital', 'rua', 'rodovia']);
+      const locMasc = new Set(['bairro', 'centro', 'distrito', 'municipio', 'estado', 'condominio', 'jardim', 'parque', 'setor', 'complexo', 'interior', 'litoral', 'polo', 'sitio']);
+      const prepFem = new Set(['na', 'da', 'pela', 'nessa', 'nesta', 'numa', 'a', 'em', 'para', 'até']);
+      const prepMasc = new Set(['no', 'do', 'pelo', 'nesse', 'neste', 'num', 'ao', 'em', 'para', 'até']);
 
-      const locMasc = new Set([
-        "bairro", "centro", "distrito", "municipio", "estado", "condominio", "jardim",
-        "parque", "setor", "complexo", "interior", "litoral", "polo", "sitio"
-      ]);
+      return texto.split("\n").filter(l => l.trim().length > 0).map(linha => {
+        const words = linha.trim().split(/\s+/);
+        const result = [];
 
-      const preposicoes = new Set([
-        "na", "no", "em", "da", "do", "das", "dos", "pela", "pelo", "para", "a", "ao"
-      ]);
+        for (let i = 0; i < words.length; i++) {
+          const word = words[i];
+          const wn = norm(word);
+          const prev = result.length > 0 ? norm(result[result.length - 1]) : '';
 
-      return texto
-        .split("\n")
-        .filter(l => l.trim().length > 0)
-        .map(linha => {
-          const words = linha.trim().split(/\s+/);
-          const result = [];
-
-          for (let i = 0; i < words.length; i++) {
-            let word = words[i];
-            const wn = normalizar(word.replace(/[.,;:!?()[\]{}]/g, ""));
-            const prev = result.length > 0 ? normalizar(result[result.length - 1].replace(/[.,;:!?()[\]{}]/g, "")) : "";
-
-            if (i > 0 && siglasZona.has(wn) && !preposicoes.has(prev)) {
-              result.push("na");
-              word = wn.toUpperCase();
-            } else if (i > 0 && siglasEstado.has(wn) && !preposicoes.has(prev)) {
-              result.push("em");
-              word = wn.toUpperCase();
-            } else if (i > 0 && locFem.has(wn) && !preposicoes.has(prev)) {
-              result.push("na");
-            } else if (i > 0 && locMasc.has(wn) && !preposicoes.has(prev)) {
-              result.push("no");
-            }
-
-            result.push(word);
+          if (i > 0 && locFem.has(wn) && !prepFem.has(prev)) {
+            result.push('na');
+          } else if (i > 0 && locMasc.has(wn) && !prepMasc.has(prev)) {
+            result.push('no');
           }
 
-          return result.join(" ");
-        })
-        .join("\n");
-    }
+          result.push(word);
+        }
 
-    function corrigirNomesProprios(texto) {
-      const correcoes = [
-        ["sao paulo", "São Paulo"],
-        ["santo andre", "Santo André"],
-        ["sao bernardo do campo", "São Bernardo do Campo"],
-        ["sao caetano do sul", "São Caetano do Sul"],
-        ["sao jose dos campos", "São José dos Campos"],
-        ["sao jose do rio preto", "São José do Rio Preto"],
-        ["mogi das cruzes", "Mogi das Cruzes"],
-        ["ferraz de vasconcelos", "Ferraz de Vasconcelos"],
-        ["itaquaquecetuba", "Itaquaquecetuba"],
-        ["guarulhos", "Guarulhos"],
-        ["osasco", "Osasco"],
-        ["campinas", "Campinas"],
-        ["sorocaba", "Sorocaba"],
-        ["barueri", "Barueri"],
-        ["alphaville", "Alphaville"],
-        ["jundiai", "Jundiaí"],
-        ["santos", "Santos"],
-        ["diadema", "Diadema"],
-        ["maua", "Mauá"],
-        ["suzano", "Suzano"],
-        ["poa", "Poá"],
-        ["aruja", "Arujá"],
-
-        ["zona sul", "Zona Sul"],
-        ["zona norte", "Zona Norte"],
-        ["zona leste", "Zona Leste"],
-        ["zona oeste", "Zona Oeste"],
-        ["grande sao paulo", "Grande São Paulo"],
-        ["regiao metropolitana", "Região Metropolitana"],
-        ["abc paulista", "ABC Paulista"],
-        ["alto tiete", "Alto Tietê"],
-        ["baixada santista", "Baixada Santista"],
-        ["vale do paraiba", "Vale do Paraíba"],
-
-        ["vila maria", "Vila Maria"],
-        ["vila mariana", "Vila Mariana"],
-        ["vila prudente", "Vila Prudente"],
-        ["vila formosa", "Vila Formosa"],
-        ["vila matilde", "Vila Matilde"],
-        ["moema", "Moema"],
-        ["pinheiros", "Pinheiros"],
-        ["tatuape", "Tatuapé"],
-        ["penha", "Penha"],
-        ["bras", "Brás"],
-        ["mooca", "Mooca"],
-        ["carrao", "Carrão"],
-        ["avenida paulista", "Avenida Paulista"],
-        ["av paulista", "Av. Paulista"],
-
-        ["acre", "Acre"],
-        ["alagoas", "Alagoas"],
-        ["amapa", "Amapá"],
-        ["amazonas", "Amazonas"],
-        ["bahia", "Bahia"],
-        ["ceara", "Ceará"],
-        ["distrito federal", "Distrito Federal"],
-        ["espirito santo", "Espírito Santo"],
-        ["goias", "Goiás"],
-        ["maranhao", "Maranhão"],
-        ["mato grosso do sul", "Mato Grosso do Sul"],
-        ["mato grosso", "Mato Grosso"],
-        ["minas gerais", "Minas Gerais"],
-        ["paraiba", "Paraíba"],
-        ["parana", "Paraná"],
-        ["pernambuco", "Pernambuco"],
-        ["piaui", "Piauí"],
-        ["rio de janeiro", "Rio de Janeiro"],
-        ["rio grande do norte", "Rio Grande do Norte"],
-        ["rio grande do sul", "Rio Grande do Sul"],
-        ["rondonia", "Rondônia"],
-        ["roraima", "Roraima"],
-        ["santa catarina", "Santa Catarina"],
-        ["sergipe", "Sergipe"],
-        ["tocantins", "Tocantins"],
-
-        ["zl", "ZL"],
-        ["zs", "ZS"],
-        ["zn", "ZN"],
-        ["zo", "ZO"],
-        ["sp", "SP"],
-        ["rj", "RJ"],
-        ["mg", "MG"],
-        ["pr", "PR"],
-        ["sc", "SC"],
-        ["rs", "RS"],
-        ["es", "ES"],
-        ["ba", "BA"],
-        ["go", "GO"],
-        ["pe", "PE"],
-        ["ce", "CE"],
-        ["df", "DF"],
-
-        ["cnpj", "CNPJ"],
-        ["cpf", "CPF"],
-        ["mei", "MEI"],
-        ["seo", "SEO"],
-        ["ia", "IA"],
-        ["b2b", "B2B"],
-        ["b2c", "B2C"],
-        ["api", "API"],
-        ["erp", "ERP"],
-        ["crm", "CRM"],
-        ["google meu negocio", "Google Meu Negócio"],
-        ["google ads", "Google Ads"],
-        ["google", "Google"],
-        ["whatsapp", "WhatsApp"],
-        ["instagram", "Instagram"],
-        ["facebook", "Facebook"],
-        ["linkedin", "LinkedIn"],
-        ["youtube", "YouTube"],
-        ["wordpress", "WordPress"],
-        ["woocommerce", "WooCommerce"],
-        ["shopify", "Shopify"],
-        ["tray", "Tray"]
-      ];
-
-      const corrigido = substituirTermosPreservandoTexto(texto, correcoes);
-      return capitalizarPrimeiraLetraDeCadaLinha(corrigido);
+        return result.join(' ');
+      }).join('\n');
     }
 
     function extrairPalavrasChave(texto) {
       const linhas = texto.split("\n").map(l => l.trim()).filter(l => l.length > 0);
       const keywords = [];
-
       for (const linha of linhas) {
         let keyword = null;
         let volume = null;
-
         const partes = linha.split("\t");
-
         if (partes.length >= 3) {
           const ck = partes[1].trim();
           const cv = partes[2].replace(/[^\d.]/g, "").trim();
-
-          if (ck && /^\d[\d.]*$/.test(cv)) {
-            keyword = ck;
-            volume = cv;
-          }
+          if (ck && /^\d[\d.]*$/.test(cv)) { keyword = ck; volume = cv; }
         }
-
         if (!keyword || !volume) {
           const m = linha.match(/^(.+?)\s*\((\d{1,3}(?:\.\d{3})*|\d+)\)$/u);
-
-          if (m) {
-            keyword = m[1].trim();
-            volume = m[2];
-          }
+          if (m) { keyword = m[1].trim(); volume = m[2]; }
         }
-
         if (!keyword || !volume) {
           const semNum = linha.replace(/^\d+/, "");
           const m = semNum.match(/^([\p{L}\s]+?)\s*(\d{1,3}(?:\.\d{3})*|\d+)(?=\D|$)/u);
-
-          if (m) {
-            keyword = m[1].trim();
-            volume = m[2];
-          }
+          if (m) { keyword = m[1].trim(); volume = m[2]; }
         }
-
         if (keyword) keywords.push(keyword);
       }
-
       return keywords.join("\n");
     }
 
@@ -963,31 +807,39 @@
         let keyword = null;
         let volume = null;
 
+        // Formato separado por tab (cópia de tabela do browser)
         const partes = linha.split("\t");
-
         if (partes.length >= 3) {
           const candidateKeyword = partes[1].trim();
           const candidateVolume = partes[2].replace(/[^\d.]/g, "").trim();
-
           if (candidateKeyword && /^\d[\d.]*$/.test(candidateVolume)) {
             keyword = candidateKeyword;
             volume = candidateVolume;
           }
         }
 
+        // Formato "keyword — volume NUMBER" (traço ou hífen antes de "volume")
         if (!keyword || !volume) {
-          const match = linha.match(/^(.+?)\s*\((\d{1,3}(?:\.\d{3})*|\d+)\)$/u);
-
+          const match = linha.match(/^(.+?)\s*[—–-]+\s*volume\s+(\d[\d.]*)\s*$/iu);
           if (match) {
             keyword = match[1].trim();
             volume = match[2];
           }
         }
 
+        // Formato do próprio output: "keyword (volume)"
+        if (!keyword || !volume) {
+          const match = linha.match(/^(.+?)\s*\((\d{1,3}(?:\.\d{3})*|\d+)\)$/u);
+          if (match) {
+            keyword = match[1].trim();
+            volume = match[2];
+          }
+        }
+
+        // Formato concatenado (sem tabs visíveis)
         if (!keyword || !volume) {
           const semNum = linha.replace(/^\d+/, "");
           const match = semNum.match(/^([\p{L}\s]+?)\s*(\d{1,3}(?:\.\d{3})*|\d+)(?=\D|$)/u);
-
           if (match) {
             keyword = match[1].trim();
             volume = match[2];
@@ -996,7 +848,6 @@
 
         if (keyword && volume) {
           const volumeNum = parseInt(volume.replace(/\./g, ""), 10);
-
           if (!isNaN(volumeNum) && volumeNum > 0) {
             itens.push({ keyword, volume, volumeNum });
           }
@@ -1004,12 +855,13 @@
       }
 
       itens.sort((a, b) => crescente ? a.volumeNum - b.volumeNum : b.volumeNum - a.volumeNum);
-
       return itens.map(item => `${item.keyword} (${item.volume})`).join("\n");
     }
 
-    function converterTexto() {
-      const texto = textoEntrada.value;
+    let ultimoResultado = null;
+
+    function converterTexto(encadear = false) {
+      const texto = (encadear && ultimoResultado !== null) ? ultimoResultado : textoEntrada.value;
       const tipoSelecionado = document.querySelector('input[name="tipoConversao"]:checked').value;
 
       if (tipoSelecionado === "maiusculas") {
@@ -1054,11 +906,15 @@
         const crescente = document.querySelector('input[name="ordemConversao"]:checked').value === "crescente";
         textoSaida.textContent = organizarPalavrasChaveVolume(texto, crescente);
       }
+
+      const resultado = textoSaida.innerText.trim();
+      ultimoResultado = resultado || null;
     }
 
     document.getElementById("btnLimpar").addEventListener("click", () => {
       textoEntrada.value = "";
       textoSaida.textContent = "";
+      ultimoResultado = null;
       atualizarContador();
     });
 
@@ -1072,7 +928,6 @@
       const concluir = () => {
         btnCopiar.textContent = "Copiado!";
         btnCopiar.classList.add("copiado");
-
         setTimeout(() => {
           btnCopiar.textContent = "Copiar";
           btnCopiar.classList.remove("copiado");
@@ -1082,12 +937,10 @@
       if (ehHtml) {
         const html = textoSaida.innerHTML;
         const plain = textoSaida.innerText;
-
         const item = new ClipboardItem({
           "text/html": new Blob([html], { type: "text/html" }),
           "text/plain": new Blob([plain], { type: "text/plain" }),
         });
-
         navigator.clipboard.write([item]).then(concluir);
       } else {
         navigator.clipboard.writeText(textoSaida.textContent).then(concluir);
@@ -1095,17 +948,20 @@
     });
 
     btnConverter.addEventListener("click", () => {
-      converterTexto();
+      ultimoResultado = null;
+      converterTexto(false);
     });
 
     textoEntrada.addEventListener("input", () => {
-      converterTexto();
+      ultimoResultado = null;
+      converterTexto(false);
       atualizarContador();
     });
 
     textoEntrada.addEventListener("paste", () => {
       setTimeout(() => {
-        converterTexto();
+        ultimoResultado = null;
+        converterTexto(false);
         atualizarContador();
       }, 0);
     });
@@ -1118,22 +974,17 @@
     opcoesConversao.forEach((opcao) => {
       opcao.addEventListener("change", () => {
         atualizarVisibilidadePrefixo();
-        converterTexto();
+        converterTexto(true);
       });
     });
 
-    document.getElementById("inputPrefixo").addEventListener("input", () => {
-      converterTexto();
-    });
+    document.getElementById("inputPrefixo").addEventListener("input", () => converterTexto(true));
 
     document.querySelectorAll('input[name="ordemConversao"]').forEach((opcao) => {
-      opcao.addEventListener("change", () => {
-        converterTexto();
-      });
+      opcao.addEventListener("change", () => converterTexto(true));
     });
 
     sincronizarEstiloMedidor();
-    atualizarContador();
   </script>
 </body>
 </html>
