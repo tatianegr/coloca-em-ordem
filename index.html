@@ -818,6 +818,21 @@
           }
         }
 
+        // Formato tabela markdown: | **keyword** | **volume** |
+        if (!keyword || !volume) {
+          if (/\|.*\|/.test(linha) && !/---/.test(linha)) {
+            const cells = linha.split('|').map(c => c.trim()).filter(c => c.length > 0);
+            if (cells.length >= 2) {
+              const candidateKeyword = cells[0].replace(/\*\*/g, '').trim();
+              const candidateVolume = cells[1].replace(/\*\*/g, '').replace(/[^\d.]/g, '').trim();
+              if (candidateKeyword && /^\d[\d.]*$/.test(candidateVolume)) {
+                keyword = candidateKeyword;
+                volume = candidateVolume;
+              }
+            }
+          }
+        }
+
         // Formato "keyword — volume NUMBER" (traço ou hífen antes de "volume")
         if (!keyword || !volume) {
           const match = linha.match(/^(.+?)\s*[—–-]+\s*volume\s+(\d[\d.]*)\s*$/iu);
