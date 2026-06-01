@@ -711,7 +711,10 @@
 
     function ordenarLinhas(texto, crescente = true) {
       const linhas = texto.split("\n").filter(l => l.trim().length > 0);
-      linhas.sort((a, b) => crescente ? a.localeCompare(b, "pt") : b.localeCompare(a, "pt"));
+      linhas.sort((a, b) => crescente
+        ? a.localeCompare(b, "pt", { numeric: true })
+        : b.localeCompare(a, "pt", { numeric: true })
+      );
       return linhas.join("\n");
     }
 
