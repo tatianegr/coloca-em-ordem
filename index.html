@@ -711,10 +711,20 @@
 
     function ordenarLinhas(texto, crescente = true) {
       const linhas = texto.split("\n").filter(l => l.trim().length > 0);
-      linhas.sort((a, b) => crescente
-        ? a.localeCompare(b, "pt", { numeric: true })
-        : b.localeCompare(a, "pt", { numeric: true })
-      );
+      const numFinal = /\((\d{1,3}(?:\.\d{3})*|\d+)\)\s*$/;
+      const todasComNum = linhas.length > 0 && linhas.every(l => numFinal.test(l));
+      if (todasComNum) {
+        linhas.sort((a, b) => {
+          const na = parseInt(a.match(numFinal)[1].replace(/\./g, ""), 10);
+          const nb = parseInt(b.match(numFinal)[1].replace(/\./g, ""), 10);
+          return crescente ? na - nb : nb - na;
+        });
+      } else {
+        linhas.sort((a, b) => crescente
+          ? a.localeCompare(b, "pt", { numeric: true })
+          : b.localeCompare(a, "pt", { numeric: true })
+        );
+      }
       return linhas.join("\n");
     }
 
