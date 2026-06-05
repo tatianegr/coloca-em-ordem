@@ -512,16 +512,6 @@
             Extrair palavras-chave
           </label>
 
-          <label style="white-space:nowrap;">
-            <input type="radio" name="tipoConversao" value="naturalizarPalavrasChave">
-            Naturalizar palavras-chave
-          </label>
-
-          <label style="white-space:nowrap;">
-            <input type="radio" name="tipoConversao" value="corrigirNomesProprios">
-            Corrigir nomes próprios
-          </label>
-
           <div style="margin-left:auto;display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px;white-space:nowrap;">
             <span>Ordem:</span>
             <label style="color:var(--text);white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:6px;">
@@ -741,51 +731,6 @@
         .join("\n");
     }
 
-    function corrigirNomesProprios(texto) {
-      const minusculas = new Set(['de', 'da', 'do', 'das', 'dos', 'e', 'em', 'na', 'no', 'nas', 'nos', 'a', 'o', 'as', 'os', 'para', 'com']);
-
-      return texto.split("\n").filter(l => l.trim().length > 0).map(linha => {
-        return linha.trim().split(/\s+/).map((word, i) => {
-          if (word.length > 1 && /[A-Z]/.test(word) && word === word.toUpperCase()) return word;
-          const lower = word.toLowerCase();
-          if (i > 0 && minusculas.has(lower)) return lower;
-          return lower.charAt(0).toUpperCase() + lower.slice(1);
-        }).join(' ');
-      }).join('\n');
-    }
-
-    function naturalizarPalavrasChave(texto) {
-      function norm(s) {
-        return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-      }
-
-      const locFem = new Set(['zona', 'regiao', 'area', 'vila', 'cidade', 'avenida', 'praca', 'alameda', 'estrada', 'serra', 'praia', 'ilha', 'lagoa', 'fazenda', 'capital', 'rua', 'rodovia']);
-      const locMasc = new Set(['bairro', 'centro', 'distrito', 'municipio', 'estado', 'condominio', 'jardim', 'parque', 'setor', 'complexo', 'interior', 'litoral', 'polo', 'sitio']);
-      const prepFem = new Set(['na', 'da', 'pela', 'nessa', 'nesta', 'numa', 'a', 'em', 'para', 'até']);
-      const prepMasc = new Set(['no', 'do', 'pelo', 'nesse', 'neste', 'num', 'ao', 'em', 'para', 'até']);
-
-      return texto.split("\n").filter(l => l.trim().length > 0).map(linha => {
-        const words = linha.trim().split(/\s+/);
-        const result = [];
-
-        for (let i = 0; i < words.length; i++) {
-          const word = words[i];
-          const wn = norm(word);
-          const prev = result.length > 0 ? norm(result[result.length - 1]) : '';
-
-          if (i > 0 && locFem.has(wn) && !prepFem.has(prev)) {
-            result.push('na');
-          } else if (i > 0 && locMasc.has(wn) && !prepMasc.has(prev)) {
-            result.push('no');
-          }
-
-          result.push(word);
-        }
-
-        return result.join(' ');
-      }).join('\n');
-    }
-
     function extrairPalavrasChave(texto) {
       const linhas = texto.split("\n").map(l => l.trim()).filter(l => l.length > 0);
       const keywords = [];
@@ -935,10 +880,6 @@
           .split("\n")
           .map((linha) => linha.replace(/\s*\(?\d+\)?/g, "").replace(/[ \t]{2,}/g, " ").trim())
           .join("\n");
-      } else if (tipoSelecionado === "corrigirNomesProprios") {
-        textoSaida.textContent = corrigirNomesProprios(texto);
-      } else if (tipoSelecionado === "naturalizarPalavrasChave") {
-        textoSaida.textContent = naturalizarPalavrasChave(texto);
       } else if (tipoSelecionado === "organizarVolume") {
         const crescente = document.querySelector('input[name="ordemConversao"]:checked').value === "crescente";
         textoSaida.textContent = organizarPalavrasChaveVolume(texto, crescente);
