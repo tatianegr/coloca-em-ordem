@@ -488,6 +488,11 @@
           </label>
 
           <label style="white-space:nowrap;">
+            <input type="radio" name="tipoConversao" value="virgulasParaLista">
+            Vírgulas em lista
+          </label>
+
+          <label style="white-space:nowrap;">
             <input type="radio" name="tipoConversao" value="ordenarLinhas">
             Ordenar linhas
           </label>
@@ -666,6 +671,10 @@
 
     function juntarLinhas(texto) {
       return texto.split("\n").filter(l => l.trim().length > 0).join(", ");
+    }
+
+    function virgulasParaLista(texto) {
+      return texto.split(",").map(s => s.trim()).filter(s => s.length > 0).join("\n");
     }
 
     function gerarSlug(texto) {
@@ -864,6 +873,8 @@
         textoSaida.textContent = numerarLinhas(texto);
       } else if (tipoSelecionado === "juntarLinhas") {
         textoSaida.textContent = juntarLinhas(texto);
+      } else if (tipoSelecionado === "virgulasParaLista") {
+        textoSaida.textContent = virgulasParaLista(texto);
       } else if (tipoSelecionado === "slug") {
         textoSaida.textContent = gerarSlug(texto);
       } else if (tipoSelecionado === "adicionarPrefixo") {
