@@ -785,6 +785,15 @@
           }
         }
 
+        // Formato "keyword (Vol. NUMBER | ...)" — verificado antes do markdown para evitar conflito de pipes
+        if (!keyword || !volume) {
+          const match = linha.match(/^(.+?)\s*\(Vol\.\s*(\d[\d.]*)\s*\|/iu);
+          if (match) {
+            keyword = match[1].trim();
+            volume = match[2];
+          }
+        }
+
         // Formato tabela markdown
         if (!keyword || !volume) {
           if (/\|.*\|/.test(linha) && !/---/.test(linha)) {
@@ -823,15 +832,6 @@
         // Formato "keyword — NUMBER buscas/mês"
         if (!keyword || !volume) {
           const match = linha.match(/^(.+?)\s+[—–]\s+(\d[\d.]*)\s+buscas\/m[eê]s\s*$/iu);
-          if (match) {
-            keyword = match[1].trim();
-            volume = match[2];
-          }
-        }
-
-        // Formato "keyword (Vol. NUMBER | ...)"
-        if (!keyword || !volume) {
-          const match = linha.match(/^(.+?)\s*\(Vol\.\s*(\d[\d.]*)\s*\|/iu);
           if (match) {
             keyword = match[1].trim();
             volume = match[2];
