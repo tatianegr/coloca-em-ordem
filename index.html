@@ -785,11 +785,22 @@
           }
         }
 
-        // Formato tabela markdown: | **keyword** | **volume** |
+        // Formato tabela markdown
         if (!keyword || !volume) {
           if (/\|.*\|/.test(linha) && !/---/.test(linha)) {
             const cells = linha.split('|').map(c => c.trim()).filter(c => c.length > 0);
-            if (cells.length >= 2) {
+            // Formato: | Ordem | Termo | Volume | Descrição |
+            if (cells.length >= 3) {
+              const possibleOrdem = cells[0].replace(/[^\d]/g, '');
+              const candidateKeyword = cells[1].replace(/\*\*/g, '').trim();
+              const candidateVolume = cells[2].replace(/\*\*/g, '').replace(/[^\d.]/g, '').trim();
+              if (possibleOrdem && candidateKeyword && /^\d[\d.]*$/.test(candidateVolume)) {
+                keyword = candidateKeyword;
+                volume = candidateVolume;
+              }
+            }
+            // Formato: | **keyword** | **volume** |
+            if ((!keyword || !volume) && cells.length >= 2) {
               const candidateKeyword = cells[0].replace(/\*\*/g, '').trim();
               const candidateVolume = cells[1].replace(/\*\*/g, '').replace(/[^\d.]/g, '').trim();
               if (candidateKeyword && /^\d[\d.]*$/.test(candidateVolume)) {
@@ -839,7 +850,7 @@
 
         if (keyword && volume) {
           const volumeNum = parseInt(volume.replace(/\./g, ""), 10);
-          if (!isNaN(volumeNum) && volumeNum > 0) {
+          if (!isNaN(volumeNum) && volumeNum >= 0) {
             itens.push({ keyword, volume, volumeNum });
           }
         }
