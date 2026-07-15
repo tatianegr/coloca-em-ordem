@@ -776,18 +776,19 @@
 
         // Formato separado por tab (cópia de tabela do browser)
         const partes = linha.split("\t");
-        if (partes.length >= 3) {
-          const candidateKeyword = partes[1].trim();
-          const candidateVolume = partes[2].replace(/[^\d.]/g, "").trim();
-          if (candidateKeyword && /^\d[\d.]*$/.test(candidateVolume)) {
+        // Formato tab: keyword na col 0, volume na col 1 (col 0 não pode ser número puro)
+        if (partes.length >= 2) {
+          const candidateKeyword = partes[0].trim();
+          const candidateVolume = partes[1].replace(/[^\d.]/g, "").trim();
+          if (candidateKeyword && !/^\d[\d.]*$/.test(candidateKeyword) && /^\d[\d.]*$/.test(candidateVolume)) {
             keyword = candidateKeyword;
             volume = candidateVolume;
           }
         }
-        // Formato tab: keyword na col 0, volume na col 1
-        if ((!keyword || !volume) && partes.length >= 2) {
-          const candidateKeyword = partes[0].trim();
-          const candidateVolume = partes[1].replace(/[^\d.]/g, "").trim();
+        // Formato tab alternativo: col 0 = índice, col 1 = keyword, col 2 = volume
+        if ((!keyword || !volume) && partes.length >= 3) {
+          const candidateKeyword = partes[1].trim();
+          const candidateVolume = partes[2].replace(/[^\d.]/g, "").trim();
           if (candidateKeyword && /^\d[\d.]*$/.test(candidateVolume)) {
             keyword = candidateKeyword;
             volume = candidateVolume;
