@@ -181,13 +181,8 @@
       border-radius: 10px;
       resize: none;
       background: var(--panel-2);
-      color: var(--panel-2);
-      outline: none;
-    }
-
-    textarea {
-      background: var(--panel-2);
       color: var(--text);
+      outline: none;
     }
 
     textarea::placeholder {
@@ -621,7 +616,10 @@
     function splitFrases(texto) {
       return texto
         .split(/(?<=[.!?])\s+|\n+/)
-        .map((f) => f.trim().replace(/[;.!?]+$/, ""))
+        .map((f) => {
+          const limpa = f.trim().replace(/[;.!?,]+$/, "");
+          return limpa.charAt(0).toUpperCase() + limpa.slice(1);
+        })
         .filter((f) => f.length > 0);
     }
 
