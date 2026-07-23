@@ -693,6 +693,7 @@
           .replace(/-+/g, "-")
         )
         .filter(l => l.length > 0)
+        .map(l => `/${l}`)
         .join("\n");
     }
 
@@ -798,7 +799,7 @@
           }
         }
 
-        // Formato "keyword (Vol. NUMBER | ...)" — verificado antes do markdown para evitar conflito de pipes
+        // Formato "keyword (Vol. NUMBER | ...)"
         if (!keyword || !volume) {
           const match = linha.match(/^(.+?)\s*\(Vol\.\s*(\d[\d.]*)\s*\|/iu);
           if (match) {
