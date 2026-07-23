@@ -693,6 +693,7 @@
           .replace(/-+/g, "-")
         )
         .filter(l => l.length > 0)
+        .map(l => `/${l}`)
         .join("\n");
     }
 
