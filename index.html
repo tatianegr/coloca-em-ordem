@@ -798,6 +798,15 @@
             volume = candidateVolume;
           }
         }
+        // Formato tab: col 0 = índice, col 1 = tipo, col 2 = keyword, col 3 = volume
+        if ((!keyword || !volume) && partes.length >= 4) {
+          const candidateKeyword = partes[2].trim();
+          const candidateVolume = partes[3].replace(/[^\d.]/g, "").trim();
+          if (candidateKeyword && !/^\d[\d.]*$/.test(candidateKeyword) && /^\d[\d.]*$/.test(candidateVolume)) {
+            keyword = candidateKeyword;
+            volume = candidateVolume;
+          }
+        }
 
         // Formato "keyword (Vol. NUMBER | ...)"
         if (!keyword || !volume) {
